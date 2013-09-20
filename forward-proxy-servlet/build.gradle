@@ -1,0 +1,23 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'eclipse'
+
+// Some notes about the jetty versions:
+// - for jetty 8, the ProxyServlet is in the artifact jetty-servlets
+// - for jetty 9, the ProxyServlet is in the artifact jetty-proxy
+def jettyVersion='9.0+';
+
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.5'
+    compile 'org.slf4j:slf4j-log4j12:1.7.5'
+    compile "org.eclipse.jetty:jetty-servlet:${jettyVersion}"
+    //compile "org.eclipse.jetty:jetty-servlets:${jettyVersion}" // jetty8
+    compile "org.eclipse.jetty:jetty-proxy:${jettyVersion}"      // jetty9
+
+    //providedCompile 'javax.servlet:javax.servlet-api:3.0.+'
+    testCompile 'junit:junit:4.11'
+}
+
+repositories {
+    mavenCentral()
+}
