@@ -16,12 +16,11 @@
 //  ========================================================================
 //
 
-package org.eclipse.jetty.embedded;
+package org.uli;
 
 import org.eclipse.jetty.proxy.ConnectHandler;
 import org.eclipse.jetty.proxy.ProxyServlet;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
@@ -29,9 +28,7 @@ public class ProxyServer
 {
     public static void main(String[] args) throws Exception
     {
-        Server server = new Server();
-        ServerConnector connector = new ServerConnector(server);
-        connector.setPort(8888);
+        Server server = new Server(8888);
 
         // Setup proxy handler to handle CONNECT methods
         ConnectHandler proxy = new ConnectHandler();

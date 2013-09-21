@@ -1,6 +1,9 @@
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'eclipse'
+apply plugin: 'application'
+
+mainClassName='org.uli.ProxyServer';
 
 // Some notes about the jetty versions:
 // - for jetty 8, the ProxyServlet is in the artifact jetty-servlets
@@ -20,4 +23,10 @@ dependencies {
 
 repositories {
     mavenCentral()
+}
+
+// build a fat jar (http://docs.codehaus.org/display/GRADLE/Cookbook#Cookbook-Creatingafatjar)
+// the jar will be named build/libs/forward-proxy-servlet.jar
+jar {
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
