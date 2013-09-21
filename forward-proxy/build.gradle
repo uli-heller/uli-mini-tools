@@ -4,7 +4,7 @@ apply plugin: 'war'
 apply plugin: 'eclipse'
 apply plugin: 'application'
 
-mainClassName='org.uli.ProxyServer';
+mainClassName='org.uli.ForwardProxyServer'; // for 'gradle run' and MANIFEST.MF
 
 // Some notes about the jetty versions:
 // - for jetty 8, the ProxyServlet is in the artifact jetty-servlets
