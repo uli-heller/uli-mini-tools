@@ -19,7 +19,7 @@
 package org.uli;
 
 import org.eclipse.jetty.proxy.ConnectHandler;
-import org.eclipse.jetty.proxy.ProxyServlet;
+//import org.eclipse.jetty.proxy.ProxyServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -36,7 +36,7 @@ public class ProxyServer
 
         // Setup proxy servlet
         ServletContextHandler context = new ServletContextHandler(proxy, "/", ServletContextHandler.SESSIONS);
-        ServletHolder proxyServlet = new ServletHolder(ProxyServlet.class);
+        ServletHolder proxyServlet = new ServletHolder(ForwardProxyServlet.class);
         proxyServlet.setInitParameter("blackList", "www.eclipse.org");
         context.addServlet(proxyServlet, "/*");
 
