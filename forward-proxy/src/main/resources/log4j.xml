@@ -12,8 +12,16 @@
     </layout> 
   </appender> 
 
+  <logger name="org.eclipse">
+    <level value="info"/>
+  </logger>
+
+  <logger name="org.uli">
+    <level value="trace"/>
+  </logger>
+
   <root>
-    <priority value="debug" />
+    <priority value="info" />
     <appender-ref ref="R" />
   </root>
 
