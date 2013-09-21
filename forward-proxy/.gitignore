@@ -1,2 +1,4 @@
 /bin
+forward-proxy.bat
 forward-proxy.log
+forward-proxy.sh
