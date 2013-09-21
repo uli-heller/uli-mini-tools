@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.client.api.AuthenticationStore;
 import org.eclipse.jetty.client.api.ProxyConfiguration;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.proxy.ProxyServlet;
@@ -22,9 +23,9 @@ public class ForwardProxyServlet extends ProxyServlet {
 
     private final Logger myLogger = LoggerFactory.getLogger(ForwardProxyServlet.class);
 
-    private final ForwardProxyProperties fpp = ForwardProxyProperties.getInstance();
+    private final ForwardProxyProperties fpp;
 
-    private ProxyConfiguration proxyConfiguration = null;
+    private ProxyConfiguration proxyConfiguration;
     
     /**
      * 
@@ -36,6 +37,7 @@ public class ForwardProxyServlet extends ProxyServlet {
      */
     public ForwardProxyServlet() {
         super();
+        this.fpp = ForwardProxyProperties.getInstance();
         initProperties();
     }
     
@@ -44,9 +46,16 @@ public class ForwardProxyServlet extends ProxyServlet {
         myLogger.debug("-> createHttpClient()");
         try {
             HttpClient httpClient = super.createHttpClient();
-            if (proxyConfiguration != null) {
+            if (this.proxyConfiguration != null) {
                 myLogger.info(":. Using parent proxy {}:{}", this.fpp.getParentProxyHost(), this.fpp.getParentProxyPort());
                 httpClient.setProxyConfiguration(proxyConfiguration);
+                String parentProxyRealm = this.fpp.getParentProxyRealm();
+                if (parentProxyRealm.length() > 0) {
+                    String parentProxyUser = this.fpp.getParentProxyUser();
+                    String parentProxyPassword = this.fpp.getParentProxyPassword();
+                    AuthenticationStore a = httpClient.getAuthenticationStore();
+                    a.addAuthentication(new BasicProxyAuthentication(parentProxyRealm, parentProxyUser, parentProxyPassword));
+                }
             }
             return httpClient;
         } finally {

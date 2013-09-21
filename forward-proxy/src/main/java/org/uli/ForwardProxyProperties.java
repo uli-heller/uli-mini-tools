@@ -3,6 +3,8 @@
  */
 package org.uli;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
@@ -24,12 +26,18 @@ public class ForwardProxyProperties {
     private final static String FORWARD_PROXY_PROPERTIES = "forward-proxy.properties";
     private final static String PARENT_PROXY_HOST = "parentProxyHost";
     private final static String PARENT_PROXY_PORT = "parentProxyPort";
+    private final static String PARENT_PROXY_REALM = "parentProxyRealm";
+    private final static String PARENT_PROXY_USER = "parentProxyUser";
+    private final static String PARENT_PROXY_PASSWORD = "parentProxyPassword";
     private final static String REPLACE_HEADERS = "replaceHeaders";
     private final static String PROXY_PORT="proxyPort";
 
     private Properties properties;
     private String parentProxyHost = null;
     private int parentProxyPort = 0;
+    private String parentProxyRealm = null;
+    private String parentProxyUser = null;
+    private String parentProxyPassword = null;
     private int proxyPort = 0;
     private List<Header> headers = new LinkedList<Header>();
     
@@ -49,7 +57,19 @@ public class ForwardProxyProperties {
         return this.parentProxyPort;
     }
 
-    public int getPoxyPort() {
+    public String getParentProxyRealm() {
+        return this.parentProxyRealm;
+    }
+
+    public String getParentProxyUser() {
+        return this.parentProxyUser;
+    }
+
+    public String getParentProxyPassword() {
+        return this.parentProxyPassword;
+    }
+
+    public int getProxyPort() {
         return this.proxyPort;
     }
 
@@ -77,21 +97,31 @@ public class ForwardProxyProperties {
                 result = deflt;
             }
         }
+        myLogger.info("Config parameter: {} = {}", name, result);
         return result;
     }
 
     private final String getStringProperty(Properties p, String name, String deflt) {
-        String result = p.getProperty(name, deflt);
-        return result.trim();
+        String result = p.getProperty(name, deflt).trim();
+        myLogger.info("Config parameter: {} = {}", name, result);
+        return result;
     }
 
     private final void initProperties() {
         InputStream is = this.getClass().getResourceAsStream("/" + FORWARD_PROXY_PROPERTIES);
         this.properties = new Properties();
         loadProperties(this.properties, is, "classpath:/"+FORWARD_PROXY_PROPERTIES);
-        loadProperties(this.properties, is, FORWARD_PROXY_PROPERTIES);
+        try {
+            is = new FileInputStream(FORWARD_PROXY_PROPERTIES);
+            loadProperties(this.properties, is, FORWARD_PROXY_PROPERTIES);
+        } catch (FileNotFoundException e) {
+            myLogger.info("Unable to read from {} - {}", FORWARD_PROXY_PROPERTIES, e.getMessage());
+        }
         this.parentProxyHost = getStringProperty(this.properties, PARENT_PROXY_HOST, "");
         this.parentProxyPort = getIntProperty(this.properties, PARENT_PROXY_PORT, -1);
+        this.parentProxyRealm = getStringProperty(this.properties, PARENT_PROXY_REALM, "");
+        this.parentProxyUser = getStringProperty(this.properties, PARENT_PROXY_USER, "");
+        this.parentProxyPassword = getStringProperty(this.properties, PARENT_PROXY_PASSWORD, "");
         this.proxyPort = getIntProperty(this.properties, PROXY_PORT, -1);
         String headersString = this.properties.getProperty(REPLACE_HEADERS);
         if (headersString != null && headersString.trim().length() > 0) {

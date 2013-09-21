@@ -29,7 +29,7 @@ public class ForwardProxyServer
     public static void main(String[] args) throws Exception
     {
         ForwardProxyProperties fpp = ForwardProxyProperties.getInstance();
-        Server server = new Server(fpp.getPoxyPort());
+        Server server = new Server(fpp.getProxyPort());
 
         // Setup proxy handler to handle CONNECT methods
         ConnectHandler proxy = new ConnectHandler();
