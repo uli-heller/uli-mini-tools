@@ -92,17 +92,34 @@ public class ForwardProxyServlet extends ProxyServlet {
         }
     }
 
+    private final int getIntProperty(Properties p, String name, int deflt) {
+        int result;
+        String s = p.getProperty(name);
+        if (s == null) {
+            result = deflt;
+        } else {
+            try {
+                result = Integer.parseInt(s);
+            } catch (Exception e) {
+                result = deflt;
+            }
+        }
+        return result;
+    }
+
+    private final String getStringProperty(Properties p, String name, String deflt) {
+        String result = p.getProperty(name, deflt);
+        return result.trim();
+    }
+
     private final void initProperties() {
         InputStream is = this.getClass().getResourceAsStream("/" + FORWARD_PROXY_PROPERTIES);
         this.properties = new Properties();
         loadProperties(this.properties, is, "classpath:/"+FORWARD_PROXY_PROPERTIES);
         loadProperties(this.properties, is, FORWARD_PROXY_PROPERTIES);
-        this.parentProxyHost = this.properties.getProperty(PARENT_PROXY_HOST);
-        String parentProxyPortString = this.properties.getProperty(PARENT_PROXY_PORT);
-        if (parentProxyPortString != null) {
-            this.parentProxyPort = Integer.parseInt(parentProxyPortString);
-        }
-        if (this.parentProxyHost != null) {
+        this.parentProxyHost = getStringProperty(this.properties, PARENT_PROXY_HOST, "");
+        this.parentProxyPort = getIntProperty(this.properties, PARENT_PROXY_PORT, -1);
+        if (this.parentProxyHost.length() > 0 && this.parentProxyPort > 0) {
             this.proxyConfiguration = new ProxyConfiguration(this.parentProxyHost, this.parentProxyPort);
         }
         String headersString = this.properties.getProperty(REPLACE_HEADERS);
