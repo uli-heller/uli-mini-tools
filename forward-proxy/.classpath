@@ -3,6 +3,7 @@
 	<classpathentry kind="output" path="bin"/>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
+	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry sourcepath="/home/uli/.gradle/caches/artifacts-26/filestore/org.slf4j/slf4j-api/1.7.5/source/654135274d4c27132ea208a4ec07f344bdb83bcb/slf4j-api-1.7.5-sources.jar" kind="lib" path="/home/uli/.gradle/caches/artifacts-26/filestore/org.slf4j/slf4j-api/1.7.5/jar/6b262da268f8ad9eff941b25503a9198f0a0ac93/slf4j-api-1.7.5.jar" exported="true"/>
 	<classpathentry sourcepath="/home/uli/.gradle/caches/artifacts-26/filestore/org.slf4j/slf4j-log4j12/1.7.5/source/65ffa6d644792e8b09cf6479d5c01ed95bb153a0/slf4j-log4j12-1.7.5-sources.jar" kind="lib" path="/home/uli/.gradle/caches/artifacts-26/filestore/org.slf4j/slf4j-log4j12/1.7.5/jar/6edffc576ce104ec769d954618764f39f0f0f10d/slf4j-log4j12-1.7.5.jar" exported="true"/>
 	<classpathentry sourcepath="/home/uli/.gradle/caches/artifacts-26/filestore/org.eclipse.jetty/jetty-servlet/9.0.5.v20130815/source/d0916198e2dc2f5a43b455239b8a9e533fc46517/jetty-servlet-9.0.5.v20130815-sources.jar" kind="lib" path="/home/uli/.gradle/caches/artifacts-26/filestore/org.eclipse.jetty/jetty-servlet/9.0.5.v20130815/jar/77d948a0aeb99551e0d24df852b977a8efc6653d/jetty-servlet-9.0.5.v20130815.jar" exported="true"/>
