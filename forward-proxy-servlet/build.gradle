@@ -28,5 +28,14 @@ repositories {
 // build a fat jar (http://docs.codehaus.org/display/GRADLE/Cookbook#Cookbook-Creatingafatjar)
 // the jar will be named build/libs/forward-proxy-servlet.jar
 jar {
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    from {
+      configurations.compile.collect {
+         it.isDirectory() ? it : zipTree(it).matching{
+            exclude "META-INF/**"
+         }
+      }
+    }
+    manifest {
+        attributes("Main-Class": mainClassName)
+    }
 }
