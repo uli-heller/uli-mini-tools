@@ -28,7 +28,7 @@ public class ForwardProxyServlet extends ProxyServlet {
 
     private final Logger myLogger = LoggerFactory.getLogger(ForwardProxyServlet.class);
     
-    private final static String FORWARD_PROXY_PROPERTIES = "/forward-proxy.properties";
+    private final static String FORWARD_PROXY_PROPERTIES = "forward-proxy.properties";
     private final static String PARENT_PROXY_HOST = "parentProxyHost";
     private final static String PARENT_PROXY_PORT = "parentProxyPort";
     private final static String REPLACE_HEADERS = "replaceHeaders";
@@ -84,14 +84,19 @@ public class ForwardProxyServlet extends ProxyServlet {
         }
     }
 
-    private final void initProperties() {
-        InputStream is = this.getClass().getResourceAsStream(FORWARD_PROXY_PROPERTIES);
-        this.properties = new Properties();
+    private final void loadProperties(Properties p, InputStream is, final String label) {
         try {
-            properties.load(is);
+            p.load(is);
         } catch (IOException e) {
-            myLogger.warn("Unable to load properties from {}", FORWARD_PROXY_PROPERTIES);
+            myLogger.warn("Unable to load properties from {}", label);
         }
+    }
+
+    private final void initProperties() {
+        InputStream is = this.getClass().getResourceAsStream("/" + FORWARD_PROXY_PROPERTIES);
+        this.properties = new Properties();
+        loadProperties(this.properties, is, "classpath:/"+FORWARD_PROXY_PROPERTIES);
+        loadProperties(this.properties, is, FORWARD_PROXY_PROPERTIES);
         this.parentProxyHost = this.properties.getProperty(PARENT_PROXY_HOST);
         String parentProxyPortString = this.properties.getProperty(PARENT_PROXY_PORT);
         if (parentProxyPortString != null) {
