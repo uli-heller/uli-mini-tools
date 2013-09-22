@@ -82,7 +82,13 @@ after doing the build. This will start a proxy server listening to port 8888.
 
 ## Issues
 
-### java.lang.IllegalArgumentException: Buffering capacity exceeded
+### Open
+
+There are no open issues at the moment.
+
+### Solved
+
+#### java.lang.IllegalArgumentException: Buffering capacity exceeded
 
 When using a parent proxy with parent proxy authentication, sometimes these error messages
 show up within the log:
@@ -122,4 +128,4 @@ show up within the log:
             at java.lang.Thread.run(Thread.java:722)
     2013-09-22 06:16:39,004 [ForwardProxyServlet-832293601-30] DEBUG org.eclipse.jetty.proxy.ProxyServlet$ProxyResponseListener:725-onComplete() - 891110758 proxying complete
 
-Unfortunately, there is no fix available yet.
+
