@@ -1,14 +1,1 @@
-defaultTasks 'clean', 'sh', 'bat'
-
-task clean {
-  // Delete all the .gradle folders
-  // Please note that this doesn't work 100%, since
-  // gradle is running at the moment of deletion and
-  // it seems to update the folders or keep them open.
-  // But at least all the files created by older
-  // versions of gradle will be deleted.
-  delete '.gradle';
-  FileTree tree = fileTree(dir: '.');
-  tree.include '**/.gradle';
-  delete tree;
-}
+defaultTasks 'sh', 'bat'
