@@ -1,0 +1,50 @@
+defaultTasks 'clean', 'sh', 'bat'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+mainClassName='org.uli.htmlunescape.HtmlUnescape'; // for 'gradle run' and MANIFEST.MF
+
+dependencies {
+  compile 'org.apache.commons:commons-lang3:3.1'
+}
+
+repositories {
+    mavenCentral()
+}
+
+// build a fat jar (http://docs.codehaus.org/display/GRADLE/Cookbook#Cookbook-Creatingafatjar)
+// the jar will be named build/libs/forward-proxy-servlet.jar
+jar {
+    from {
+      configurations.compile.collect {
+         it.isDirectory() ? it : zipTree(it).matching{
+            exclude "META-INF/**"
+         }
+      }
+    }
+    manifest {
+        attributes("Main-Class": mainClassName)
+    }
+}
+
+clean {
+    delete "${project.name}.sh"
+    delete "${project.name}.bat"
+    delete 'bin'
+}
+
+task sh(dependsOn: 'jar') << {
+  ant.concat(destfile: "${project.name}.sh", binary: true) {
+    fileset(file: "../scripts/dist.sh")
+    fileset(file: "build/libs/${project.name}.jar", erroronmissingdir: false)
+  }
+  ant.chmod(file: "${project.name}.sh", perm: 'a+x')
+}
+
+task bat(dependsOn: 'jar') << {
+  ant.concat(destfile: "${project.name}.bat", binary: true) {
+    fileset(file: "../scripts/dist.bat")
+    fileset(file: "build/libs/${project.name}.jar", erroronmissingdir: false)
+  }
+}
