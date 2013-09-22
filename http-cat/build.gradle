@@ -24,17 +24,31 @@ clean {
     delete 'bin'
 }
 
-task sh(dependsOn: 'jar') << {
-  ant.concat(destfile: "${project.name}.sh", binary: true) {
-    fileset(file: "../scripts/dist.sh")
-    fileset(file: "build/libs/${project.name}.jar", erroronmissingdir: false)
+task sh {
+  dependsOn 'jar';
+  String distShName = '../scripts/dist.sh';
+  String jarName    = "build/libs/${project.name}.jar";
+  String shName     = "${project.name}.sh"
+  inputs.file distShName;
+  inputs.file jarName;
+  outputs.file shName;
+  ant.concat(destfile: shName, binary: true) {
+    fileset(file: distShName)
+    fileset(file: jarName, erroronmissingdir: false)
   }
-  ant.chmod(file: "${project.name}.sh", perm: 'a+x')
+  ant.chmod(file: shName, perm: 'a+x')
 }
 
-task bat(dependsOn: 'jar') << {
-  ant.concat(destfile: "${project.name}.bat", binary: true) {
-    fileset(file: "../scripts/dist.bat")
-    fileset(file: "build/libs/${project.name}.jar", erroronmissingdir: false)
+task bat {
+  dependsOn 'jar';
+  String distBatName = '../scripts/dist.bat';
+  String jarName    = "build/libs/${project.name}.jar";
+  String batName     = "${project.name}.bat"
+  inputs.file distBatName;
+  inputs.file jarName;
+  outputs.file batName;
+  ant.concat(destfile: batName, binary: true) {
+    fileset(file: distBatName)
+    fileset(file: jarName, erroronmissingdir: false)
   }
 }
