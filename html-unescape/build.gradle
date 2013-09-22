@@ -3,18 +3,17 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'application'
 
-mainClassName='org.uli.htmlunescape.HtmlUnescape'; // for 'gradle run' and MANIFEST.MF
+mainClassName='org.uli.htmlunescape.Main'; // for 'gradle run' and MANIFEST.MF
 
 dependencies {
   compile 'org.apache.commons:commons-lang3:3.1'
+  compile 'commons-cli:commons-cli:1.2'
 }
 
 repositories {
     mavenCentral()
 }
 
-// build a fat jar (http://docs.codehaus.org/display/GRADLE/Cookbook#Cookbook-Creatingafatjar)
-// the jar will be named build/libs/forward-proxy-servlet.jar
 jar {
     from {
       configurations.compile.collect {
