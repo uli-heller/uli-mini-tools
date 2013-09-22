@@ -26,7 +26,6 @@ public class ForwardProxyProperties {
     private final static String FORWARD_PROXY_PROPERTIES = "forward-proxy.properties";
     private final static String PARENT_PROXY_HOST = "parentProxyHost";
     private final static String PARENT_PROXY_PORT = "parentProxyPort";
-    private final static String PARENT_PROXY_REALM = "parentProxyRealm";
     private final static String PARENT_PROXY_USER = "parentProxyUser";
     private final static String PARENT_PROXY_PASSWORD = "parentProxyPassword";
     private final static String REPLACE_HEADERS = "replaceHeaders";
@@ -35,7 +34,6 @@ public class ForwardProxyProperties {
     private Properties properties;
     private String parentProxyHost = null;
     private int parentProxyPort = 0;
-    private String parentProxyRealm = null;
     private String parentProxyUser = null;
     private String parentProxyPassword = null;
     private int proxyPort = 0;
@@ -55,10 +53,6 @@ public class ForwardProxyProperties {
 
     public int getParentProxyPort() {
         return this.parentProxyPort;
-    }
-
-    public String getParentProxyRealm() {
-        return this.parentProxyRealm;
     }
 
     public String getParentProxyUser() {
@@ -119,7 +113,6 @@ public class ForwardProxyProperties {
         }
         this.parentProxyHost = getStringProperty(this.properties, PARENT_PROXY_HOST, "");
         this.parentProxyPort = getIntProperty(this.properties, PARENT_PROXY_PORT, -1);
-        this.parentProxyRealm = getStringProperty(this.properties, PARENT_PROXY_REALM, "");
         this.parentProxyUser = getStringProperty(this.properties, PARENT_PROXY_USER, "");
         this.parentProxyPassword = getStringProperty(this.properties, PARENT_PROXY_PASSWORD, "");
         this.proxyPort = getIntProperty(this.properties, PROXY_PORT, -1);

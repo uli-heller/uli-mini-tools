@@ -49,12 +49,11 @@ public class ForwardProxyServlet extends ProxyServlet {
             if (this.proxyConfiguration != null) {
                 myLogger.info(":. Using parent proxy {}:{}", this.fpp.getParentProxyHost(), this.fpp.getParentProxyPort());
                 httpClient.setProxyConfiguration(proxyConfiguration);
-                String parentProxyRealm = this.fpp.getParentProxyRealm();
-                if (parentProxyRealm.length() > 0) {
-                    String parentProxyUser = this.fpp.getParentProxyUser();
-                    String parentProxyPassword = this.fpp.getParentProxyPassword();
+                String parentProxyUser = this.fpp.getParentProxyUser();
+                String parentProxyPassword = this.fpp.getParentProxyPassword();
+                if (parentProxyUser.length() > 0) {
                     AuthenticationStore a = httpClient.getAuthenticationStore();
-                    a.addAuthentication(new BasicProxyAuthentication(parentProxyRealm, parentProxyUser, parentProxyPassword));
+                    a.addAuthentication(new BasicProxyAuthentication(parentProxyUser, parentProxyPassword));
                 }
             }
             return httpClient;

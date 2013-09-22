@@ -79,3 +79,47 @@ execute
 * `./forward-proxy.sh`
 
 after doing the build. This will start a proxy server listening to port 8888.
+
+## Issues
+
+### java.lang.IllegalArgumentException: Buffering capacity exceeded
+
+When using a parent proxy with parent proxy authentication, sometimes these error messages
+show up within the log:
+
+    2013-09-22 06:16:39,002 [ForwardProxyServlet-832293601-30] DEBUG org.eclipse.jetty.proxy.ProxyServlet$ProxyResponseListener:671-onHeaders() - 891110758 proxying to downstream:
+    HttpContentResponse[HTTP/1.0 407 Proxy Authentication Required - 0 bytes]
+    Server: squid/3.1.19M
+    MIME-Version: 1.0M
+    Date: Sun, 22 Sep 2013 04:15:31 GMTM
+    Content-Type: text/htmlM
+    Content-Length: 4160M
+    X-Squid-Error: ERR_CACHE_ACCESS_DENIED 0M
+    Vary: Accept-LanguageM
+    Content-Language: de-deM
+    Proxy-Authenticate: Basic realm="Squid proxy-caching web server"M
+    X-Cache: MISS from localhostM
+    X-Cache-Lookup: NONE from localhost:3128M
+    Via: 1.0 localhost (squid/3.1.19)M
+    Connection: keep-alive
+    
+    2013-09-22 06:16:39,003 [ForwardProxyServlet-832293601-30] DEBUG org.eclipse.jetty.proxy.ProxyServlet:490-onResponseContent() - 891110758 proxying content to downstream: 0 bytes
+    2013-09-22 06:16:39,003 [ForwardProxyServlet-832293601-30] DEBUG org.eclipse.jetty.proxy.ProxyServlet:502-onResponseFailure() - 891110758 proxying failed
+    java.lang.IllegalArgumentException: Buffering capacity exceeded
+            at org.eclipse.jetty.client.util.BufferingResponseListener.onHeaders(BufferingResponseListener.java:67)
+            at org.eclipse.jetty.client.ResponseNotifier.notifyHeaders(ResponseNotifier.java:107)
+            at org.eclipse.jetty.client.ResponseNotifier.notifyHeaders(ResponseNotifier.java:99)
+            at org.eclipse.jetty.client.HttpReceiver.headerComplete(HttpReceiver.java:252)
+            at org.eclipse.jetty.http.HttpParser.parseHeaders(HttpParser.java:947)
+            at org.eclipse.jetty.http.HttpParser.parseNext(HttpParser.java:1194)
+            at org.eclipse.jetty.client.HttpReceiver.parse(HttpReceiver.java:117)
+            at org.eclipse.jetty.client.HttpReceiver.receive(HttpReceiver.java:83)
+            at org.eclipse.jetty.client.HttpConnection.receive(HttpConnection.java:273)
+            at org.eclipse.jetty.client.HttpConnection.onFillable(HttpConnection.java:261)
+            at org.eclipse.jetty.io.AbstractConnection$ReadCallback.run(AbstractConnection.java:358)
+            at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:601)
+            at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:532)
+            at java.lang.Thread.run(Thread.java:722)
+    2013-09-22 06:16:39,004 [ForwardProxyServlet-832293601-30] DEBUG org.eclipse.jetty.proxy.ProxyServlet$ProxyResponseListener:725-onComplete() - 891110758 proxying complete
+
+Unfortunately, there is no fix available yet.

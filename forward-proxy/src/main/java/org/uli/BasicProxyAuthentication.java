@@ -4,12 +4,10 @@
 package org.uli;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import org.eclipse.jetty.client.api.Authentication;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.client.api.Request;
-import org.eclipse.jetty.client.util.BasicAuthentication;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.util.Attributes;
 import org.eclipse.jetty.util.B64Code;
@@ -24,24 +22,12 @@ import org.slf4j.LoggerFactory;
  */
 public class BasicProxyAuthentication implements Authentication {
     Logger myLogger = LoggerFactory.getLogger(getClass());
-    BasicAuthentication basicAuthentication;
-    String realm;
     String user;
     String password;
-    static URI uri;
-    static {
-        try {
-            uri = new URI("http://a.b/c");
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }
 
-    BasicProxyAuthentication(String realm, String user, String password) {
-        this.realm = realm;
+    BasicProxyAuthentication(String user, String password) {
         this.user = user;
         this.password = password;
-        this.basicAuthentication = new BasicAuthentication(uri, realm, user, password);
     }
 
     /* (non-Javadoc)
@@ -49,10 +35,7 @@ public class BasicProxyAuthentication implements Authentication {
      */
     @Override
     public boolean matches(String type, URI uri, String realm) {
-        myLogger.debug("-> type={}, uri={}, realm={}", type, uri, realm);
-        boolean result = this.basicAuthentication.matches(type,  BasicProxyAuthentication.uri, realm);
-        myLogger.debug("<- {}", result);
-        return result;
+        return true;
     }
 
     @Override
