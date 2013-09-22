@@ -32,10 +32,10 @@ public class ForwardProxyProperties {
     private final static String PROXY_PORT="proxyPort";
 
     private Properties properties;
-    private String parentProxyHost = null;
+    private String parentProxyHost = "";
     private int parentProxyPort = 0;
-    private String parentProxyUser = null;
-    private String parentProxyPassword = null;
+    private String parentProxyUser = "";
+    private String parentProxyPassword = "";
     private int proxyPort = 0;
     private List<Header> headers = new LinkedList<Header>();
     
@@ -46,7 +46,15 @@ public class ForwardProxyProperties {
         super();
         initProperties();
     }
-    
+
+    public boolean getUseParentProxy() {
+        return this.parentProxyHost.length() > 0;
+    }
+
+    public boolean getUseParentProxyAuthorization() {
+        return this.getUseParentProxy() && this.parentProxyUser.length() > 0;
+    }
+
     public String getParentProxyHost() {
         return this.parentProxyHost;
     }

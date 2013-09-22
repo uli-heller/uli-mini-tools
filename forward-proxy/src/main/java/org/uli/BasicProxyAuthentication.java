@@ -42,15 +42,26 @@ public class BasicProxyAuthentication implements Authentication {
     public Result authenticate(Request request, ContentResponse response, HeaderInfo headerInfo, Attributes context)
     {
         myLogger.debug("-> request={}, response={}, headerInfo={}", request, response, headerInfo);
-        String encoding = StringUtil.__ISO_8859_1;
-        String value = "Basic " + B64Code.encode(user + ":" + password, encoding);
+        String value = getValue(user, password);
         Result result = new BasicProxyResult(headerInfo.getHeader(), request.getURI(), value);
         myLogger.debug("<- {}", result);
         return result;
     }
 
+    private final String getValue(String user, String password) {
+        String encoding = StringUtil.__ISO_8859_1;
+        String value = "Basic " + B64Code.encode(user + ":" + password, encoding);
+        return value;
+    }
+
+    public void apply(Request request) {
+        String value = getValue(user, password);
+        request.header(HttpHeader.PROXY_AUTHORIZATION/*"Proxy-Authorization"*/, value);
+    }
+
     private static class BasicProxyResult implements Result
     {
+        Logger myLogger = LoggerFactory.getLogger(getClass());
         private final HttpHeader header;
         private final URI uri;
         private final String value;
@@ -71,7 +82,9 @@ public class BasicProxyAuthentication implements Authentication {
         @Override
         public void apply(Request request)
         {
+            myLogger.debug("-> header={}, value={}", header, value);
             request.header(header, value);
+            myLogger.debug("<-");
         }
 
         @Override

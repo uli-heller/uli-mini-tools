@@ -46,15 +46,15 @@ public class ForwardProxyServlet extends ProxyServlet {
         myLogger.debug("-> createHttpClient()");
         try {
             HttpClient httpClient = super.createHttpClient();
-            if (this.proxyConfiguration != null) {
+            if (this.fpp.getUseParentProxy()) {
                 myLogger.info(":. Using parent proxy {}:{}", this.fpp.getParentProxyHost(), this.fpp.getParentProxyPort());
                 httpClient.setProxyConfiguration(proxyConfiguration);
-                String parentProxyUser = this.fpp.getParentProxyUser();
-                String parentProxyPassword = this.fpp.getParentProxyPassword();
-                if (parentProxyUser.length() > 0) {
+                /*if (this.fpp.getUseParentProxyAuthorization()) {
+                    String parentProxyUser = this.fpp.getParentProxyUser();
+                    String parentProxyPassword = this.fpp.getParentProxyPassword();
                     AuthenticationStore a = httpClient.getAuthenticationStore();
                     a.addAuthentication(new BasicProxyAuthentication(parentProxyUser, parentProxyPassword));
-                }
+                }*/
             }
             return httpClient;
         } finally {
@@ -77,12 +77,16 @@ public class ForwardProxyServlet extends ProxyServlet {
             proxyRequest.header(h.getName(), null); // remove the old header
             proxyRequest.header(h.getName(), h.getValue());
         }
+        if (this.fpp.getUseParentProxyAuthorization()) {
+            BasicProxyAuthentication bpa = new BasicProxyAuthentication(this.fpp.getParentProxyUser(), this.fpp.getParentProxyPassword());
+            bpa.apply(proxyRequest);
+        }
     }
 
     private final void initProperties() {
-        String parentProxyHost = this.fpp.getParentProxyHost();
-        int parentProxyPort    = this.fpp.getParentProxyPort();
-        if (parentProxyHost.length() > 0 && parentProxyPort > 0) {
+        if (this.fpp.getUseParentProxy()) {
+            String parentProxyHost = this.fpp.getParentProxyHost();
+            int parentProxyPort    = this.fpp.getParentProxyPort();
             this.proxyConfiguration = new ProxyConfiguration(parentProxyHost, parentProxyPort);
         }
     }
