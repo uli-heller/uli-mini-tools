@@ -1,4 +1,4 @@
-defaultTasks 'clean', 'sh', 'bat'
+defaultTasks 'sh', 'bat'
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'application'
@@ -24,31 +24,36 @@ clean {
     delete 'bin'
 }
 
-task sh {
-  dependsOn 'jar';
+task(sh) {
   String distShName = '../scripts/dist.sh';
   String jarName    = "build/libs/${project.name}.jar";
   String shName     = "${project.name}.sh"
+  dependsOn jar;
   inputs.file distShName;
   inputs.file jarName;
   outputs.file shName;
-  ant.concat(destfile: shName, binary: true) {
-    fileset(file: distShName)
-    fileset(file: jarName, erroronmissingdir: false)
+  doLast {
+    ant.concat(destfile: shName, binary: true) {
+      fileset(file: distShName)
+      fileset(file: jarName, erroronmissingdir: false)
+    }
+    ant.chmod(file: shName, perm: 'a+x')
+    println "TASK SH";
   }
-  ant.chmod(file: shName, perm: 'a+x')
 }
 
-task bat {
-  dependsOn 'jar';
+task(bat) {
   String distBatName = '../scripts/dist.bat';
   String jarName    = "build/libs/${project.name}.jar";
   String batName     = "${project.name}.bat"
+  dependsOn jar;
   inputs.file distBatName;
   inputs.file jarName;
   outputs.file batName;
-  ant.concat(destfile: batName, binary: true) {
-    fileset(file: distBatName)
-    fileset(file: jarName, erroronmissingdir: false)
+  doLast {
+    ant.concat(destfile: batName, binary: true) {
+      fileset(file: distBatName)
+      fileset(file: jarName, erroronmissingdir: false)
+    }
   }
 }
