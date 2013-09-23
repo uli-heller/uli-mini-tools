@@ -24,7 +24,7 @@ jar {
 }
 
 clean {
-    delete "${project.name}.sh"
-    delete "${project.name}.bat"
+    delete "${project.name}-${version}.sh"
+    delete "${project.name}-${version}.bat"
     delete 'bin'
 }
