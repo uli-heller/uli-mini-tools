@@ -8,6 +8,9 @@ apply from: '../common.gradle'
 
 mainClassName='org.uli.ForwardProxyServer'; // for 'gradle run' and MANIFEST.MF
 
+sourceCompatibility=1.7
+targetCompatibility=1.7
+
 // Some notes about the jetty versions:
 // - for jetty 8, the ProxyServlet is in the artifact jetty-servlets
 // - for jetty 9, the ProxyServlet is in the artifact jetty-proxy
