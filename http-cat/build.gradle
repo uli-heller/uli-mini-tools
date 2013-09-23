@@ -3,6 +3,8 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'application'
 
+apply from: '../common.gradle'
+
 mainClassName='org.uli.httpcat.HttpCat'; // for 'gradle run' and MANIFEST.MF
 
 jar {
@@ -22,38 +24,4 @@ clean {
     delete "${project.name}.sh"
     delete "${project.name}.bat"
     delete 'bin'
-}
-
-task(sh) {
-  String distShName = '../scripts/dist.sh';
-  String jarName    = "build/libs/${project.name}.jar";
-  String shName     = "${project.name}.sh"
-  dependsOn jar;
-  inputs.file distShName;
-  inputs.file jarName;
-  outputs.file shName;
-  doLast {
-    ant.concat(destfile: shName, binary: true) {
-      fileset(file: distShName)
-      fileset(file: jarName, erroronmissingdir: false)
-    }
-    ant.chmod(file: shName, perm: 'a+x')
-    println "TASK SH";
-  }
-}
-
-task(bat) {
-  String distBatName = '../scripts/dist.bat';
-  String jarName    = "build/libs/${project.name}.jar";
-  String batName     = "${project.name}.bat"
-  dependsOn jar;
-  inputs.file distBatName;
-  inputs.file jarName;
-  outputs.file batName;
-  doLast {
-    ant.concat(destfile: batName, binary: true) {
-      fileset(file: distBatName)
-      fileset(file: jarName, erroronmissingdir: false)
-    }
-  }
 }
