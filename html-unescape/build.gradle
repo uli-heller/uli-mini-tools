@@ -1,7 +1,9 @@
-defaultTasks 'clean', 'sh', 'bat'
+defaultTasks 'sh', 'bat'
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'application'
+
+apply from: '../common.gradle'
 
 mainClassName='org.uli.htmlunescape.Main'; // for 'gradle run' and MANIFEST.MF
 
@@ -31,34 +33,4 @@ clean {
     delete "${project.name}.sh"
     delete "${project.name}.bat"
     delete 'bin'
-}
-
-
-task sh {
-  dependsOn 'jar';
-  String distShName = '../scripts/dist.sh';
-  String jarName    = "build/libs/${project.name}.jar";
-  String shName     = "${project.name}.sh"
-  inputs.file distShName;
-  inputs.file jarName;
-  outputs.file shName;
-  ant.concat(destfile: shName, binary: true) {
-    fileset(file: distShName)
-    fileset(file: jarName, erroronmissingdir: false)
-  }
-  ant.chmod(file: shName, perm: 'a+x')
-}
-
-task bat {
-  dependsOn 'jar';
-  String distBatName = '../scripts/dist.bat';
-  String jarName    = "build/libs/${project.name}.jar";
-  String batName     = "${project.name}.bat"
-  inputs.file distBatName;
-  inputs.file jarName;
-  outputs.file batName;
-  ant.concat(destfile: batName, binary: true) {
-    fileset(file: distBatName)
-    fileset(file: jarName, erroronmissingdir: false)
-  }
 }
