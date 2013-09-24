@@ -4,8 +4,6 @@ apply plugin: 'war'
 apply plugin: 'eclipse'
 apply plugin: 'application'
 
-apply from: '../common.gradle'
-
 mainClassName='org.uli.ForwardProxyServer'; // for 'gradle run' and MANIFEST.MF
 
 sourceCompatibility=1.7

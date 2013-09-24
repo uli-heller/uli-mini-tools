@@ -1,1 +1,36 @@
 defaultTasks 'sh', 'bat'
+
+// Configure compiler options and other things - taken from
+// https://github.com/spring-projects/spring-framework/blob/master/build.gradle
+configure(allprojects - rootProject) { project ->
+        ext.gradleScriptDir = "${rootProject.projectDir}"
+        ext.scriptsDir = "${rootProject.projectDir}/scripts"
+        ext.distSh = "${scriptsDir}/dist.sh"
+        ext.distBat = "${scriptsDir}/dist.bat"
+        ext.commonGradle    = "${rootProject.projectDir}/common.gradle"
+
+	apply plugin: 'java'
+	
+	apply from: "${commonGradle}"
+ 
+	[compileJava, compileTestJava]*.options*.compilerArgs = [
+		"-Xlint:serial",
+		"-Xlint:varargs",
+		"-Xlint:cast",
+		"-Xlint:classfile",
+		"-Xlint:dep-ann",
+		"-Xlint:divzero",
+		"-Xlint:empty",
+		"-Xlint:finally",
+		"-Xlint:overrides",
+		"-Xlint:path",
+		"-Xlint:processing",
+		"-Xlint:static",
+		"-Xlint:try",
+		"-Xlint:-options",     // intentionally disabled
+		"-Xlint:-fallthrough", // intentionally disabled
+		"-Xlint:-rawtypes",    // TODO enable and fix warnings
+		"-Xlint:-deprecation", // TODO enable and fix warnings
+		"-Xlint:-unchecked"    // TODO enable and fix warnings
+	]
+}

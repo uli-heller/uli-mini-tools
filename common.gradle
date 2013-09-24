@@ -1,6 +1,6 @@
 task(sh) {
-  String distShName = '../scripts/dist.sh';
-  String jarName    = "build/libs/${project.name}.jar";
+  String distShName = distSh;
+  String jarName    = "${project.projectDir}/build/libs/${project.name}-${version}.jar";
   String shName     = "${project.name}-${version}.sh"
   dependsOn jar;
   inputs.file distShName;
@@ -16,8 +16,8 @@ task(sh) {
 }
 
 task(bat) {
-  String distBatName = '../scripts/dist.bat';
-  String jarName    = "build/libs/${project.name}.jar";
+  String distBatName = distBat
+  String jarName    = "${project.projectDir}/build/libs/${project.name}-${version}.jar";
   String batName     = "${project.name}-${version}.bat"
   dependsOn jar;
   inputs.file distBatName;
