@@ -1,0 +1,57 @@
+defaultTasks 'clean', 'sh', 'bat'
+
+apply plugin: "java"
+apply plugin: "eclipse"
+apply plugin: "application"
+apply plugin: "findbugs"
+
+apply from: '../common.gradle'
+
+mainClassName = "org.uli.tcpmon.Main";
+
+sourceCompatibility=1.5
+targetCompatibility=1.5
+
+String slf4jVersion       = '+'; // 1.7.5
+String log4jExtrasVersion = '+'; // 1.1
+String commonsCliVersion  = '+'; // 1.2
+
+dependencies {
+  compile 'org.jboss.netty:netty:3.2.0.Final'
+  compile "commons-cli:commons-cli:${commonsCliVersion}"
+  compile group: 'org.slf4j',     name: 'slf4j-api',   version: slf4jVersion
+  compile group: 'org.slf4j',     name: 'slf4j-log4j12', version: slf4jVersion
+  compile group: 'log4j',         name: 'apache-log4j-extras', version: log4jExtrasVersion
+}
+
+repositories {
+    mavenCentral()
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+// build a fat jar (http://docs.codehaus.org/display/GRADLE/Cookbook#Cookbook-Creatingafatjar)
+// the jar will be named build/libs/forward-proxy-servlet.jar
+jar {
+    from {
+      configurations.compile.collect {
+         it.isDirectory() ? it : zipTree(it).matching{
+            exclude "META-INF/**"
+         }
+      }
+    }
+    manifest {
+        attributes("Main-Class": mainClassName)
+    }
+}
+
+clean {
+    delete "${project.name}-${version}.sh"
+    delete "${project.name}-${version}.bat"
+    delete 'bin'
+}

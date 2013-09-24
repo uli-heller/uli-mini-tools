@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd} %d{ABSOLUTE} [%t] %5p %C:%L-%M() - %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="file" class="org.apache.log4j.rolling.RollingFileAppender">
+        <param name="File" value="uli-tcpmon-debug.log"/>
+        <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+           <param name="FileNamePattern" value="uli-tcpmon.log.%d" />
+        </rollingPolicy>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd} %d{ABSOLUTE} [%t] %5p %C:%L-%M() - %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="sendFile" class="org.apache.log4j.rolling.RollingFileAppender">
+        <param name="File" value="uli-tcpmon.log"/>
+        <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+           <param name="FileNamePattern" value="uli-tcpmon-debug.log.%d" />
+        </rollingPolicy>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd} %d{ABSOLUTE} SEND&gt;&gt;&gt;%m%n" />
+        </layout>
+    </appender>
+
+    <appender name="recvFile" class="org.apache.log4j.rolling.RollingFileAppender">
+        <param name="File" value="uli-tcpmon.log"/>
+        <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+           <param name="FileNamePattern" value="uli-tcpmon.log.%d" />
+        </rollingPolicy>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd} %d{ABSOLUTE} RECV&lt;&lt;&lt;%m%n" />
+        </layout>
+    </appender>
+
+    <logger name="SEND" additivity="false">
+        <level value="trace"/>
+        <appender-ref ref="sendFile"/>
+    </logger>
+
+    <logger name="RECV" additivity="false">
+        <level value="trace"/>
+        <appender-ref ref="recvFile"/>
+    </logger>
+
+    <root>
+        <priority value="trace"></priority>
+        <appender-ref ref="file"/>
+    </root>
+</log4j:configuration>
