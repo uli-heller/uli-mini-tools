@@ -15,7 +15,9 @@ String log4jExtrasVersion = '+'; // 1.1
 String commonsCliVersion  = '+'; // 1.2
 
 dependencies {
-  compile 'org.jboss.netty:netty:3.2.0.Final'
+  //compile 'org.jboss.netty:netty:3.2.0.Final'
+  compile 'io.netty:netty:3.7.0.Final'
+  //compile 'io.netty:netty-all:4.0.9.Final'
   compile "commons-cli:commons-cli:${commonsCliVersion}"
   compile group: 'org.slf4j',     name: 'slf4j-api',   version: slf4jVersion
   compile group: 'org.slf4j',     name: 'slf4j-log4j12', version: slf4jVersion
