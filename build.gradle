@@ -25,7 +25,7 @@ configure(allprojects - rootProject) { project ->
 		"-Xlint:overrides",
 		"-Xlint:path",
 		"-Xlint:processing",
-		//"-Xlint:static",
+		"-Xlint:static",
 		"-Xlint:try",
 		"-Xlint:-options",     // intentionally disabled
 		"-Xlint:-fallthrough", // intentionally disabled
