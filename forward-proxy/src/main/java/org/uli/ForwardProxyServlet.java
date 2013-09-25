@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.client.api.AuthenticationStore;
+//import org.eclipse.jetty.client.api.AuthenticationStore;
 import org.eclipse.jetty.client.api.ProxyConfiguration;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.proxy.ProxyServlet;
@@ -49,6 +49,10 @@ public class ForwardProxyServlet extends ProxyServlet {
             if (this.fpp.getUseParentProxy()) {
                 myLogger.info(":. Using parent proxy {}:{}", this.fpp.getParentProxyHost(), this.fpp.getParentProxyPort());
                 httpClient.setProxyConfiguration(proxyConfiguration);
+                // Typically, you add a AuthenticationStore to the httpClient in order to handle
+                // the authorization. Unfortunately, this doesn't work in a 
+                // reliable way for proxy authorization - I've observed various
+                // InvalidArgumentExceptions when using this.
                 /*if (this.fpp.getUseParentProxyAuthorization()) {
                     String parentProxyUser = this.fpp.getParentProxyUser();
                     String parentProxyPassword = this.fpp.getParentProxyPassword();
