@@ -14,7 +14,6 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
@@ -39,36 +38,31 @@ public class Main {
             int remotePort;
             MessageFormatterType messageFormatterType = MessageFormatterType.MIXED;
             Options options = new Options();
-            @SuppressWarnings("static-access")
-            Option lp = OptionBuilder.withArgName("localPort")
+            Option lp = MyOptionBuilder.init().withArgName("localPort")
                         .hasArg(true)
                         .isRequired(true)
                         .withDescription("local port")
                         .withLongOpt("local-port")
                         .create("l");
-            @SuppressWarnings("static-access")
-            Option rh = OptionBuilder.withArgName("remoteHost")
+            Option rh = MyOptionBuilder.init().withArgName("remoteHost")
                         .hasArg(true)
                         .isRequired(true)
                         .withDescription("remote host")
                         .withLongOpt("remote-host")
                         .create("h");
-            @SuppressWarnings("static-access")
-            Option rp = OptionBuilder.withArgName("remotePort")
+            Option rp = MyOptionBuilder.init().withArgName("remotePort")
                         .hasArg(true)
                         .isRequired(true)
                         .withDescription("remote port")
                         .withLongOpt("remote-port")
                         .create("r");
-            @SuppressWarnings("static-access")
-            Option textOnly = OptionBuilder
+            Option textOnly = MyOptionBuilder.init()
                         .hasArg(false)
                         .isRequired(false)
                         .withDescription("do text-only logging")
                         .withLongOpt("text-only")
                         .create("T");
-            @SuppressWarnings("static-access")
-            Option hexOnly = OptionBuilder
+            Option hexOnly = MyOptionBuilder.init()
                         .hasArg(false)
                         .isRequired(false)
                         .withDescription("do hex-only logging")

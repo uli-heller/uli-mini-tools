@@ -15,7 +15,9 @@
  * limitations under the License.
  */
 
-package org.apache.commons.cli;
+package org.uli.tcpmon;
+
+import org.apache.commons.cli.Option;
 
 /**
  * OptionBuilder allows the user to create Options using descriptive methods.
@@ -28,47 +30,51 @@ package org.apache.commons.cli;
  * @version $Revision: 754830 $, $Date: 2009-03-16 00:26:44 -0700 (Mon, 16 Mar 2009) $
  * @since 1.0
  */
-public final class OptionBuilder
+public final class MyOptionBuilder
 {
     /** long option */
-    private static String longopt;
+    private String longopt;
 
     /** option description */
-    private static String description;
+    private String description;
 
     /** argument name */
-    private static String argName;
+    private String argName;
 
     /** is required? */
-    private static boolean required;
+    private boolean required;
 
     /** the number of arguments */
-    private static int numberOfArgs = Option.UNINITIALIZED;
+    private int numberOfArgs = Option.UNINITIALIZED;
 
     /** option type */
-    private static Object type;
+    private Object type;
 
     /** option can have an optional argument value */
-    private static boolean optionalArg;
+    private boolean optionalArg;
 
     /** value separator for argument value */
-    private static char valuesep;
+    private char valuesep;
 
     /** option builder instance */
-    private static OptionBuilder instance = new OptionBuilder();
+    private MyOptionBuilder instance = new MyOptionBuilder();
 
     /**
      * private constructor to prevent instances being created
      */
-    private OptionBuilder()
+    private MyOptionBuilder()
     {
         // hide the constructor
+    }
+
+    static MyOptionBuilder init() {
+        return new MyOptionBuilder();
     }
 
     /**
      * Resets the member variables to their default values.
      */
-    private static void reset()
+    private void reset()
     {
         description = null;
         argName = "arg";
@@ -89,9 +95,9 @@ public final class OptionBuilder
      * @param newLongopt the long option value
      * @return the OptionBuilder instance
      */
-    public static OptionBuilder withLongOpt(String newLongopt)
+    public MyOptionBuilder withLongOpt(String newLongopt)
     {
-        OptionBuilder.longopt = newLongopt;
+        this.longopt = newLongopt;
 
         return instance;
     }
@@ -101,9 +107,9 @@ public final class OptionBuilder
      *
      * @return the OptionBuilder instance
      */
-    public static OptionBuilder hasArg()
+    public MyOptionBuilder hasArg()
     {
-        OptionBuilder.numberOfArgs = 1;
+        this.numberOfArgs = 1;
 
         return instance;
     }
@@ -115,9 +121,9 @@ public final class OptionBuilder
      * @param hasArg if true then the Option has an argument value
      * @return the OptionBuilder instance
      */
-    public static OptionBuilder hasArg(boolean hasArg)
+    public MyOptionBuilder hasArg(boolean hasArg)
     {
-        OptionBuilder.numberOfArgs = hasArg ? 1 : Option.UNINITIALIZED;
+        this.numberOfArgs = hasArg ? 1 : Option.UNINITIALIZED;
 
         return instance;
     }
@@ -128,9 +134,9 @@ public final class OptionBuilder
      * @param name the name for the argument value
      * @return the OptionBuilder instance
      */
-    public static OptionBuilder withArgName(String name)
+    public MyOptionBuilder withArgName(String name)
     {
-        OptionBuilder.argName = name;
+        this.argName = name;
 
         return instance;
     }
@@ -140,9 +146,9 @@ public final class OptionBuilder
      *
      * @return the OptionBuilder instance
      */
-    public static OptionBuilder isRequired()
+    public MyOptionBuilder isRequired()
     {
-        OptionBuilder.required = true;
+        this.required = true;
 
         return instance;
     }
@@ -153,7 +159,7 @@ public final class OptionBuilder
      *
      * <b>Example:</b>
      * <pre>
-     * Option opt = OptionBuilder.withValueSeparator(':')
+     * Option opt = this.withValueSeparator(':')
      *                           .create('D');
      *
      * CommandLine line = parser.parse(args);
@@ -165,9 +171,9 @@ public final class OptionBuilder
      *
      * @return the OptionBuilder instance
      */
-    public static OptionBuilder withValueSeparator(char sep)
+    public MyOptionBuilder withValueSeparator(char sep)
     {
-        OptionBuilder.valuesep = sep;
+        this.valuesep = sep;
 
         return instance;
     }
@@ -178,7 +184,7 @@ public final class OptionBuilder
      *
      * <b>Example:</b>
      * <pre>
-     * Option opt = OptionBuilder.withValueSeparator()
+     * Option opt = this.withValueSeparator()
      *                           .create('D');
      *
      * CommandLine line = parser.parse(args);
@@ -188,9 +194,9 @@ public final class OptionBuilder
      *
      * @return the OptionBuilder instance
      */
-    public static OptionBuilder withValueSeparator()
+    public MyOptionBuilder withValueSeparator()
     {
-        OptionBuilder.valuesep = '=';
+        this.valuesep = '=';
 
         return instance;
     }
@@ -202,9 +208,9 @@ public final class OptionBuilder
      * @param newRequired if true then the Option is required
      * @return the OptionBuilder instance
      */
-    public static OptionBuilder isRequired(boolean newRequired)
+    public MyOptionBuilder isRequired(boolean newRequired)
     {
-        OptionBuilder.required = newRequired;
+        this.required = newRequired;
 
         return instance;
     }
@@ -214,9 +220,9 @@ public final class OptionBuilder
      *
      * @return the OptionBuilder instance
      */
-    public static OptionBuilder hasArgs()
+    public MyOptionBuilder hasArgs()
     {
-        OptionBuilder.numberOfArgs = Option.UNLIMITED_VALUES;
+        this.numberOfArgs = Option.UNLIMITED_VALUES;
 
         return instance;
     }
@@ -227,9 +233,9 @@ public final class OptionBuilder
      * @param num the number of args that the option can have
      * @return the OptionBuilder instance
      */
-    public static OptionBuilder hasArgs(int num)
+    public MyOptionBuilder hasArgs(int num)
     {
-        OptionBuilder.numberOfArgs = num;
+        this.numberOfArgs = num;
 
         return instance;
     }
@@ -239,10 +245,10 @@ public final class OptionBuilder
      *
      * @return the OptionBuilder instance
      */
-    public static OptionBuilder hasOptionalArg()
+    public MyOptionBuilder hasOptionalArg()
     {
-        OptionBuilder.numberOfArgs = 1;
-        OptionBuilder.optionalArg = true;
+        this.numberOfArgs = 1;
+        this.optionalArg = true;
 
         return instance;
     }
@@ -252,10 +258,10 @@ public final class OptionBuilder
      *
      * @return the OptionBuilder instance
      */
-    public static OptionBuilder hasOptionalArgs()
+    public MyOptionBuilder hasOptionalArgs()
     {
-        OptionBuilder.numberOfArgs = Option.UNLIMITED_VALUES;
-        OptionBuilder.optionalArg = true;
+        this.numberOfArgs = Option.UNLIMITED_VALUES;
+        this.optionalArg = true;
 
         return instance;
     }
@@ -267,10 +273,10 @@ public final class OptionBuilder
      * the next Option created can have.
      * @return the OptionBuilder instance
      */
-    public static OptionBuilder hasOptionalArgs(int numArgs)
+    public MyOptionBuilder hasOptionalArgs(int numArgs)
     {
-        OptionBuilder.numberOfArgs = numArgs;
-        OptionBuilder.optionalArg = true;
+        this.numberOfArgs = numArgs;
+        this.optionalArg = true;
 
         return instance;
     }
@@ -282,9 +288,9 @@ public final class OptionBuilder
      * @param newType the type of the Options argument value
      * @return the OptionBuilder instance
      */
-    public static OptionBuilder withType(Object newType)
+    public MyOptionBuilder withType(Object newType)
     {
-        OptionBuilder.type = newType;
+        this.type = newType;
 
         return instance;
     }
@@ -295,9 +301,9 @@ public final class OptionBuilder
      * @param newDescription a description of the Option's purpose
      * @return the OptionBuilder instance
      */
-    public static OptionBuilder withDescription(String newDescription)
+    public MyOptionBuilder withDescription(String newDescription)
     {
-        OptionBuilder.description = newDescription;
+        this.description = newDescription;
 
         return instance;
     }
@@ -311,7 +317,7 @@ public final class OptionBuilder
      * @throws IllegalArgumentException if <code>opt</code> is not
      * a valid character.  See Option.
      */
-    public static Option create(char opt) throws IllegalArgumentException
+    public Option create(char opt) throws IllegalArgumentException
     {
         return create(String.valueOf(opt));
     }
@@ -322,11 +328,11 @@ public final class OptionBuilder
      * @return the Option instance
      * @throws IllegalArgumentException if <code>longOpt</code> has not been set.
      */
-    public static Option create() throws IllegalArgumentException
+    public Option create() throws IllegalArgumentException
     {
         if (longopt == null)
         {
-            OptionBuilder.reset();
+            this.reset();
             throw new IllegalArgumentException("must specify longopt");
         }
 
@@ -343,7 +349,7 @@ public final class OptionBuilder
      * @throws IllegalArgumentException if <code>opt</code> is not
      * a valid character.  See Option.
      */
-    public static Option create(String opt) throws IllegalArgumentException
+    public Option create(String opt) throws IllegalArgumentException
     {
         Option option = null;
         try {
@@ -360,7 +366,7 @@ public final class OptionBuilder
             option.setArgName(argName);
         } finally {
             // reset the OptionBuilder properties
-            OptionBuilder.reset();
+            this.reset();
         }
 
         // return the Option instance
