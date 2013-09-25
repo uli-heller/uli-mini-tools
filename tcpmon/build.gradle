@@ -7,8 +7,8 @@ apply plugin: "findbugs"
 
 mainClassName = "org.uli.tcpmon.Main";
 
-sourceCompatibility=1.5
-targetCompatibility=1.5
+sourceCompatibility=1.6 // Don't use 1.5 - Eclipse will complain about @Override for interfaces
+targetCompatibility=1.6
 
 String slf4jVersion       = '+'; // 1.7.5
 String log4jExtrasVersion = '+'; // 1.1
