@@ -80,6 +80,62 @@ execute
 
 after doing the build. This will start a proxy server listening to port 8888.
 
+### Configuration File
+
+You can modify various parameters of the proxy by creating a property file
+named "forward-proxy.properties". For a sample of this file, see
+[src/main/resources/forward-proxy.properties](https://github.com/uli-heller/uli-mini-tools/blob/master/forward-proxy/src/main/resources/forward-proxy.properties).
+
+The configuration parameters are described in the following chapters.
+
+#### proxyPort
+
+The port on which the forward proxy is listening, defaults to 8888.
+
+#### parentProxyHost
+
+The IP address or the hostname of the parent proxy in case
+all your traffic has to go through another proxy. Leave it empty
+for a direct connection!
+
+#### parentProxyPort
+
+Port number of the parent proxy. Only used when parentProxyHost is set, too!
+
+#### parentProxyUser
+
+User for the parent proxy in case you have to authenticate against it.
+Only used when parentProxyHost is set! Leave it empty in case you
+don't need to authenticate against the parant proxy!
+
+#### parentProxyPassword
+
+Password for the parent proxy in case you have to authenticate against it.
+Only used when parentProxyHost and parentProcyUser are set!
+Leave it empty in case you
+don't need to authenticate against the parant proxy!
+
+#### replaceHeaders
+
+A comma separated list of headers that shall be replaced or
+added to the http requests before sending them to the web
+server or to the parent proxy.
+
+Example:
+
+    replaceHeaders = User-Agent, ClientProtocol, x-sap-webdisp-ap
+
+#### {header}
+
+For each header specified in 'replaceHeaders', an line defining
+the value of the header has to show up.
+
+Example:
+
+    User-Agent       = Forward-Proxy
+    ClientProtocol   = https
+    x-sap-webdisp-ap = HTTPS=443
+
 ## Issues
 
 ### Open
