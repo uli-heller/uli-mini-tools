@@ -1,5 +1,5 @@
 include 'forward-proxy'
 include 'html-unescape'
 include 'http-cat'
+include 'md5sum'
 include 'tcpmon'
-
