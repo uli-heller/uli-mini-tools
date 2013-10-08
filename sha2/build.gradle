@@ -1,0 +1,28 @@
+defaultTasks 'sh', 'bat'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+sourceCompatibility=1.5
+targetCompatibility=1.5
+
+mainClassName='org.uli.sha2.SHA2'; // for 'gradle run' and MANIFEST.MF
+
+jar {
+    from {
+      configurations.compile.collect {
+         it.isDirectory() ? it : zipTree(it).matching{
+            exclude "META-INF/**"
+         }
+      }
+    }
+    manifest {
+        attributes("Main-Class": mainClassName)
+    }
+}
+
+clean {
+    delete "${project.name}-${version}.sh"
+    delete "${project.name}-${version}.bat"
+    delete 'bin'
+}
