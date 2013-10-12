@@ -10,10 +10,12 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
+//import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+
+import org.uli.util.MyOptionBuilder;
 
 public class Main {
     static private final String NAME="http-unescape";
@@ -26,26 +28,22 @@ public class Main {
     public int execute(String[] args) {
         int exitCode = 0;
         Options options = new Options();
-        @SuppressWarnings("static-access")
-        Option f = OptionBuilder.withArgName("fromFile")
+	Option f = MyOptionBuilder.init().withArgName("fromFile")
                     .hasArg(true)
                     .isRequired(true)
                     .withDescription("input file containing html entities")
                     .create("f");
-        @SuppressWarnings("static-access")
-        Option t = OptionBuilder.withArgName("toFile")
+        Option t = MyOptionBuilder.init().withArgName("toFile")
                     .hasArg(true)
                     .isRequired(true)
                     .withDescription("output file to be generated containing no html entities")
                     .create("t");
-        @SuppressWarnings("static-access")
-        Option encoding = OptionBuilder.withArgName("encoding")
+	Option encoding = MyOptionBuilder.init().withArgName("encoding")
                     .hasArg(true)
                     .isRequired(false)
                     .withDescription("encoding for input and output")
                     .create("e");
-        @SuppressWarnings("static-access")
-        Option h = OptionBuilder.hasArg(false)
+        Option h = MyOptionBuilder.init().hasArg(false)
                     .withDescription("print help (this message)")
                     .create("h");
         options.addOption(f);
