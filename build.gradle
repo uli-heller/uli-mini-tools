@@ -1,13 +1,18 @@
-defaultTasks 'sh', 'bat'
+defaultTasks 'dist'
 
 // Configure compiler options and other things - taken from
 // https://github.com/spring-projects/spring-framework/blob/master/build.gradle
-configure(allprojects - rootProject) { project ->
+configure(subprojects) { project ->
         ext.gradleScriptDir = "${rootProject.projectDir}"
         ext.scriptsDir = "${rootProject.projectDir}/scripts"
         ext.distSh = "${scriptsDir}/dist.sh"
         ext.distBat = "${scriptsDir}/dist.bat"
         ext.commonGradle    = "${rootProject.projectDir}/common.gradle"
+
+        def defaultDistTasks = [ 'sh', 'bat' ];
+        def specialDistTasks = [
+	  util: ['jar', 'test'],
+        ];
 
 	apply plugin: 'java'
 	
@@ -33,4 +38,5 @@ configure(allprojects - rootProject) { project ->
 		"-Xlint:-deprecation", // TODO enable and fix warnings
 		"-Xlint:-unchecked"    // TODO enable and fix warnings
 	]
+	task dist(dependsOn: specialDistTasks[name] ?: defaultDistTasks);
 }
