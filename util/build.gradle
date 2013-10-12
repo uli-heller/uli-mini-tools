@@ -1,0 +1,17 @@
+defaultTasks 'sh', 'bat'
+
+apply plugin: "java"
+apply plugin: "eclipse"
+
+sourceCompatibility=1.6 // Don't use 1.5 - Eclipse will complain about @Override for interfaces
+targetCompatibility=1.6
+
+String commonsCliVersion  = '+'; // 1.2
+
+dependencies {
+  compile "commons-cli:commons-cli:${commonsCliVersion}"
+}
+
+repositories {
+    mavenCentral()
+}
