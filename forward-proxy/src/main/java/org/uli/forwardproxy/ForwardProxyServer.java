@@ -16,7 +16,7 @@
 //  ========================================================================
 //
 
-package org.uli;
+package org.uli.forwardproxy;
 
 import org.eclipse.jetty.proxy.ConnectHandler;
 //import org.eclipse.jetty.proxy.ProxyServlet;

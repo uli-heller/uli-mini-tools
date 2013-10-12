@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.uli;
+package org.uli.forwardproxy;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
