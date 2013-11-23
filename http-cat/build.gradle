@@ -20,9 +20,3 @@ jar {
         attributes("Main-Class": mainClassName)
     }
 }
-
-clean {
-    delete "${project.name}-${version}.sh"
-    delete "${project.name}-${version}.bat"
-    delete 'bin'
-}
