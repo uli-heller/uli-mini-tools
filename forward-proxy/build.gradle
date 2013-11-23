@@ -1,7 +1,6 @@
-defaultTasks 'clean', 'sh', 'bat'
+defaultTasks 'sh', 'bat'
 apply plugin: 'java'
 apply plugin: 'war'
-apply plugin: 'eclipse'
 apply plugin: 'application'
 
 mainClassName='org.uli.forwardproxy.ForwardProxyServer'; // for 'gradle run' and MANIFEST.MF
@@ -42,10 +41,4 @@ jar {
     manifest {
         attributes("Main-Class": mainClassName)
     }
-}
-
-clean {
-    delete "${project.name}-${version}.sh"
-    delete "${project.name}-${version}.bat"
-    delete 'bin'
 }

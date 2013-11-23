@@ -3,6 +3,7 @@ defaultTasks 'dist'
 // Configure compiler options and other things - taken from
 // https://github.com/spring-projects/spring-framework/blob/master/build.gradle
 configure(subprojects) { project ->
+        apply plugin: 'eclipse'
         ext.gradleScriptDir = "${rootProject.projectDir}"
         ext.scriptsDir = "${rootProject.projectDir}/scripts"
         ext.distSh = "${scriptsDir}/dist.sh"
@@ -39,4 +40,11 @@ configure(subprojects) { project ->
 		"-Xlint:-unchecked"    // TODO enable and fix warnings
 	]
 	task dist(dependsOn: specialDistTasks[name] ?: defaultDistTasks);
+        clean.dependsOn cleanEclipse;
+        clean.doLast {
+          delete "${projectDir}/${project.name}-${version}.sh"
+          delete "${projectDir}/${project.name}-${version}.bat"
+          delete "${projectDir}/${project.name}*log"
+          delete "${buildDir}"
+        }
 }
