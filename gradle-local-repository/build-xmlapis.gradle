@@ -5,5 +5,8 @@ dependencies {
   compile 'xml-apis:xml-apis:2.0.2'
 }
 repositories {
+    ivy {
+      url 'ivy-repo'
+    }
     mavenCentral()
 }

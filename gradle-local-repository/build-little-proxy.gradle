@@ -1,0 +1,43 @@
+defaultTasks 'clean', 'sh', 'bat'
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+mainClassName='org.uli.littleproxy.LittleProxyServer'; // for 'gradle run' and MANIFEST.MF
+
+sourceCompatibility=1.7
+targetCompatibility=1.7
+
+
+dependencies {
+    compile 'org.littleshoot:littleproxy:1.0.0-beta3'
+}
+
+repositories {
+    ivy {
+      url 'ivy-repo'
+    }
+    mavenCentral()
+}
+
+// build a fat jar (http://docs.codehaus.org/display/GRADLE/Cookbook#Cookbook-Creatingafatjar)
+// the jar will be named build/libs/forward-proxy-servlet.jar
+jar {
+    from {
+      configurations.compile.collect {
+         it.isDirectory() ? it : zipTree(it).matching{
+            exclude "META-INF/**"
+         }
+      }
+    }
+    manifest {
+        attributes("Main-Class": mainClassName)
+    }
+}
+
+clean {
+    delete "${project.name}-${version}.sh"
+    delete "${project.name}-${version}.bat"
+    delete 'bin'
+}

@@ -1,0 +1,35 @@
+defaultTasks 'sh', 'bat'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+mainClassName='copyArtifacts'; // for 'gradle run' and MANIFEST.MF
+ext.groovyScriptName="scripts/copyArtifacts.groovy";
+
+dependencies {
+  compile 'org.codehaus.groovy:groovy-all:2.2.0'
+  testCompile 'junit:junit:4.11'
+  runtime "commons-cli:commons-cli:1.2"
+  runtime 'org.apache.ant:ant:1.9.2'
+}
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    from {
+      configurations.runtime.collect {
+         it.isDirectory() ? it : zipTree(it).matching {
+            exclude { detail ->
+               detail.getFile().getParentFile().getName().equals("META-INF") && !detail.getFile().getName().equals("dgminfo")
+            }
+         }
+      }
+    }
+    manifest {
+        attributes("Main-Class": mainClassName)
+    }
+}
+
+jar.dependsOn groovyJar
