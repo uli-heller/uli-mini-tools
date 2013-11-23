@@ -17,7 +17,7 @@ task(sh) {
 
 task(bat) {
   String distBatName = distBat
-  String jarName    = "${project.projectDir}/build/libs/${project.name}-${version}.jar";
+  String jarName     = "${project.projectDir}/build/libs/${project.name}-${version}.jar";
   String batName     = "${project.name}-${version}.bat"
   dependsOn jar;
   inputs.file distBatName;
@@ -28,5 +28,11 @@ task(bat) {
       fileset(file: distBatName)
       fileset(file: jarName, erroronmissingdir: false)
     }
+  }
+}
+
+task(groovyJar) {
+  doLast {
+    org.codehaus.groovy.tools.FileSystemCompiler.commandLineCompile( [ "-d", "${project.buildDir}/classes/main", project.groovyScriptName ] as String[] )
   }
 }

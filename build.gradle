@@ -41,7 +41,7 @@ configure(subprojects) { project ->
 	]
 	task dist(dependsOn: specialDistTasks[name] ?: defaultDistTasks);
         clean.dependsOn cleanEclipse;
-        clean.doLast {
+        clean {
           delete "${projectDir}/${project.name}-${version}.sh"
           delete "${projectDir}/${project.name}-${version}.bat"
           delete "${projectDir}/${project.name}*log"
