@@ -1,0 +1,9 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+dependencies {
+  compile 'xml-apis:xml-apis:2.0.2'
+}
+repositories {
+    mavenCentral()
+}
