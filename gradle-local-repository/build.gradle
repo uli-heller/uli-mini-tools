@@ -4,7 +4,7 @@ apply plugin: 'eclipse'
 apply plugin: 'application'
 
 mainClassName='copyArtifacts'; // for 'gradle run' and MANIFEST.MF
-ext.groovyScriptName="scripts/copyArtifacts.groovy";
+ext.groovyScriptName="${projectDir}/scripts/copyArtifacts.groovy";
 
 dependencies {
   compile 'org.codehaus.groovy:groovy-all:2.2.0'
