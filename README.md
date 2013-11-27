@@ -13,6 +13,9 @@ This project contains some of my small Java based tools.
 * sha2 ... calculate the SHA256 hash of a file; emulates the unix command "sha256sum"
 * tcpmon ... monitors tcp connections
 
+See <https://github.com/uli-heller/uli-mini-tools-downloads> for precompiled
+binaries.
+
 Build
 -----
 
