@@ -3,6 +3,7 @@ ULI-MINI-TOOLS
 
 This project contains some of my small Java based tools.
 
+* base64 ... prints the base64 encoded file content
 * forward-proxy ... a forward proxy based on Jetty, see [forward-proxy/README.md](forward-proxy/README.md) for details
 * gradle-local-repository ... copies the gradle cache into a local ivy repo, see [gradle-local-repository/README.md](gradle-local-repository/README.md) for details
 * html-unescape ... unescape all html entities included in a file
