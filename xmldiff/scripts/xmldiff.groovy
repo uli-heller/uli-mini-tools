@@ -1,3 +1,10 @@
+//
+// This is the groovy script comparing 2 xml files.
+// Currently, I do not use it any more. I've switched to
+// a java class instead since packaging sizes are these:
+//  * groovy script + dependencies: 8 MB (8694717 bytes)
+//  * java class + dependencies:  0,1 MB (145038 bytes)
+//
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.DetailedDiff;
 
