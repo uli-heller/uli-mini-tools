@@ -86,7 +86,7 @@ public final class MyOptionBuilder
     private char valuesep;
 
     /** option builder instance */
-    private MyOptionBuilder instance = new MyOptionBuilder();
+    //private MyOptionBuilder instance = new MyOptionBuilder();
 
     /**
      * private constructor to prevent instances being created
@@ -128,7 +128,7 @@ public final class MyOptionBuilder
     {
         this.longopt = newLongopt;
 
-        return instance;
+        return this;
     }
 
     /**
@@ -140,7 +140,7 @@ public final class MyOptionBuilder
     {
         this.numberOfArgs = 1;
 
-        return instance;
+        return this;
     }
 
     /**
@@ -154,7 +154,7 @@ public final class MyOptionBuilder
     {
         this.numberOfArgs = hasArg ? 1 : Option.UNINITIALIZED;
 
-        return instance;
+        return this;
     }
 
     /**
@@ -167,7 +167,7 @@ public final class MyOptionBuilder
     {
         this.argName = name;
 
-        return instance;
+        return this;
     }
 
     /**
@@ -179,7 +179,7 @@ public final class MyOptionBuilder
     {
         this.required = true;
 
-        return instance;
+        return this;
     }
 
     /**
@@ -204,7 +204,7 @@ public final class MyOptionBuilder
     {
         this.valuesep = sep;
 
-        return instance;
+        return this;
     }
 
     /**
@@ -227,7 +227,7 @@ public final class MyOptionBuilder
     {
         this.valuesep = '=';
 
-        return instance;
+        return this;
     }
 
     /**
@@ -241,7 +241,7 @@ public final class MyOptionBuilder
     {
         this.required = newRequired;
 
-        return instance;
+        return this;
     }
 
     /**
@@ -253,7 +253,7 @@ public final class MyOptionBuilder
     {
         this.numberOfArgs = Option.UNLIMITED_VALUES;
 
-        return instance;
+        return this;
     }
 
     /**
@@ -266,7 +266,7 @@ public final class MyOptionBuilder
     {
         this.numberOfArgs = num;
 
-        return instance;
+        return this;
     }
 
     /**
@@ -279,7 +279,7 @@ public final class MyOptionBuilder
         this.numberOfArgs = 1;
         this.optionalArg = true;
 
-        return instance;
+        return this;
     }
 
     /**
@@ -292,7 +292,7 @@ public final class MyOptionBuilder
         this.numberOfArgs = Option.UNLIMITED_VALUES;
         this.optionalArg = true;
 
-        return instance;
+        return this;
     }
 
     /**
@@ -307,7 +307,7 @@ public final class MyOptionBuilder
         this.numberOfArgs = numArgs;
         this.optionalArg = true;
 
-        return instance;
+        return this;
     }
 
     /**
@@ -321,7 +321,7 @@ public final class MyOptionBuilder
     {
         this.type = newType;
 
-        return instance;
+        return this;
     }
 
     /**
@@ -334,7 +334,7 @@ public final class MyOptionBuilder
     {
         this.description = newDescription;
 
-        return instance;
+        return this;
     }
 
     /**
