@@ -13,6 +13,7 @@ This project contains some of my small Java based tools.
 * sha1 ... calculate the SHA1 hash of a file; emulates the unix command "sha1sum"
 * sha2 ... calculate the SHA256 hash of a file; emulates the unix command "sha256sum"
 * tcpmon ... monitors tcp connections
+* xmldiff ... shows the differences between xml files (based on xmlunit)
 
 See <https://github.com/uli-heller/uli-mini-tools-downloads> for precompiled
 binaries.

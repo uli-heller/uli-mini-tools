@@ -31,8 +31,32 @@ task(bat) {
   }
 }
 
-task(groovyJar) {
+task copyToOutputLibs(type: Copy) {
+    into "${project.buildDir}/output/libs"
+    from configurations.runtime
+}
+
+task(groovyJar, dependsOn: copyToOutputLibs) {
   doLast {
-    org.codehaus.groovy.tools.FileSystemCompiler.commandLineCompile( [ "-d", "${project.buildDir}/classes/main", project.groovyScriptName ] as String[] )
+    def files = [];
+    new File("${project.buildDir}/output/libs").eachFile { files.add(it.getAbsolutePath()) };
+    String classpath = files.join(File.pathSeparator);
+    org.codehaus.groovy.tools.FileSystemCompiler.commandLineCompile( ["-classpath", classpath, "-d", "${project.buildDir}/classes/main", project.groovyScriptName ] as String[] )
   }
 }
+
+/*
+task(jarsToLib) {
+  doLast {
+    from {
+      configurations.runtime.collect {
+         it.isDirectory() ? it : zipTree(it).matching {
+            exclude { detail ->
+               detail.getFile().getParentFile().getName().equals("META-INF") && !detail.getFile().getName().equals("dgminfo")
+            }
+         }
+      }
+    }
+  }
+}
+*/
