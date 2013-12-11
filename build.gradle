@@ -33,11 +33,11 @@ configure(subprojects) { project ->
 		"-Xlint:processing",
 		"-Xlint:static",
 		"-Xlint:try",
+		"-Xlint:unchecked",
 		"-Xlint:-options",     // intentionally disabled
 		"-Xlint:-fallthrough", // intentionally disabled
 		"-Xlint:-rawtypes",    // TODO enable and fix warnings
-		"-Xlint:-deprecation", // TODO enable and fix warnings
-		"-Xlint:-unchecked"    // TODO enable and fix warnings
+		"-Xlint:-deprecation"  // TODO enable and fix warnings
 	]
 	task dist(dependsOn: specialDistTasks[name] ?: defaultDistTasks);
         clean.dependsOn cleanEclipse;
