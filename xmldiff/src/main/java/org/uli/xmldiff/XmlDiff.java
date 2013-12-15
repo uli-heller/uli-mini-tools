@@ -67,6 +67,10 @@ public class XmlDiff {
 	}
 	XMLUnit.setTestDocumentBuilderFactory(dbf);
 	XMLUnit.setControlDocumentBuilderFactory(dbf);
+        XMLUnit.setIgnoreAttributeOrder(true);
+        XMLUnit.setIgnoreComments(true);
+        XMLUnit.setNormalizeWhitespace(true);
+        XMLUnit.setNormalize(true);
     }
 
     public static int run(String[] args) {
@@ -90,10 +94,18 @@ public class XmlDiff {
 		    break;
 		}
 		String[] remainingArgs = commandLine.getArgs();
+		if (remainingArgs.length != 2) {
+		    printHelp(System.err, options, null);
+		    System.err.println("Expecting 2 command line arguments - got "+remainingArgs.length);
+		    exitCode = 11;
+		    break;
+		}
 		Diff diff = new Diff(getReader(remainingArgs[0]), getReader(remainingArgs[1]));
 		if (! diff.similar()) {
 		    DetailedDiff details = new DetailedDiff(diff);
-		    for (Difference d : (List<Difference>) details.getAllDifferences()) {
+		    //for (Difference d : (List<Difference>) details.getAllDifferences()) {
+		    for (Object o : details.getAllDifferences()) {
+			Difference d = (Difference) o;
 			System.out.println(d.toString());
 			exitCode=1;
 		    }
