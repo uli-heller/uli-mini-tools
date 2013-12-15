@@ -35,3 +35,16 @@ License
 -------
 
 See [LICENSE.txt](LICENSE.txt).
+
+Version History
+---------------
+
+### 0.4.0 (not yet released)
+
+* gradle-local-repository: Fixed error handling
+
+* xmldiff: ignore attribute order, ignore comments, normalizeWhitespace, normalize
+
+### 0.3.0
+
+No written history
