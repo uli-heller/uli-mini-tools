@@ -37,7 +37,10 @@ String matchJar = ".jar";
 groovyHomeDir.eachFileRecurse { File file ->
   String name = file.getName();
   if (name.endsWith(matchJar)) {
-    allJars.add(parseJar(file));
+    Jar jar = parseJar(file);
+    if (jar != null) {
+        allJars.add(jar);
+    }
   }
 }
 
@@ -70,11 +73,15 @@ for (Ivy ivy : allIvys) {
 }
 
 GroupArtifactVersion parseGroupArtifactVersion(File f) {
-  File d1 = f.getParentFile(); //...descriptors/org.littleshoot/dnsjava/2.1.3/e9d03b7c6586155fbee8fb2de8b5b149
-  File d2 = d1.getParentFile();     //...descriptors/org.littleshoot/dnsjava/2.1.3
-  File d3 = d2.getParentFile();     //...descriptors/org.littleshoot/dnsjava
-  File d4 = d3.getParentFile();     //...descriptors/org.littleshoot
-  return new GroupArtifactVersion(group: d4.getName(), artifact: d3.getName(), version: d2.getName());
+  File d1 = f?.getParentFile(); //...descriptors/org.littleshoot/dnsjava/2.1.3/e9d03b7c6586155fbee8fb2de8b5b149
+  File d2 = d1?.getParentFile();     //...descriptors/org.littleshoot/dnsjava/2.1.3
+  File d3 = d2?.getParentFile();     //...descriptors/org.littleshoot/dnsjava
+  File d4 = d3?.getParentFile();     //...descriptors/org.littleshoot
+  GroupArtifactVersion gav = null;
+  if (d4 != null) {
+    gav = new GroupArtifactVersion(group: d4.getName(), artifact: d3.getName(), version: d2.getName());
+  }
+  return gav;
 }
 
 @EqualsAndHashCode
@@ -98,7 +105,11 @@ class Ivy {
 
 Jar parseJar (File jar) {
   GroupArtifactVersion gav = parseGroupArtifactVersion(jar);
-  return new Jar(groupArtifactVersion: gav, jar: jar);
+  Jar parsedJar = null;
+  if (gav != null) {
+    parsedJar = new Jar(groupArtifactVersion: gav, jar: jar);
+  }
+  return parsedJar;
 }
 
 @ToString(includeNames=true,excludes="jar")
