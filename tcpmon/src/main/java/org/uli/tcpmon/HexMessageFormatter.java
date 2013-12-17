@@ -1,6 +1,7 @@
 package org.uli.tcpmon;
 
 import java.util.List;
+import org.uli.util.HexDump;
 
 public class HexMessageFormatter implements MessageFormatter {
     @Override
