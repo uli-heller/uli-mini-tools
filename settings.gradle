@@ -1,6 +1,7 @@
 include 'base64'
 include 'forward-proxy'
 include 'gradle-local-repository'
+include 'hexdump'
 include 'html-unescape'
 include 'http-cat'
 include 'md5sum'

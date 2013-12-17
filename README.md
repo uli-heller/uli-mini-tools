@@ -6,6 +6,7 @@ This project contains some of my small Java based tools.
 * base64 ... prints the base64 encoded file content
 * forward-proxy ... a forward proxy based on Jetty, see [forward-proxy/README.md](forward-proxy/README.md) for details
 * gradle-local-repository ... copies the gradle cache into a local ivy repo, see [gradle-local-repository/README.md](gradle-local-repository/README.md) for details
+* hexdump ... prints a hexdump of a file (similar to 'od')
 * html-unescape ... unescape all html entities included in a file
 * http-cat ... download a http url and print it to stdout
 * little-proxy ... a forward proxy based on LittleProxy, see [little-proxy/README.md](little-proxy/README.md) for details
@@ -42,6 +43,8 @@ Version History
 ### 0.4.0 (not yet released)
 
 * gradle-local-repository: Fixed error handling
+
+* hexdump: New tool
 
 * xmldiff: ignore attribute order, ignore comments, normalizeWhitespace, normalize
 
