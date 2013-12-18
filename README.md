@@ -48,6 +48,8 @@ Version History
 
 * xmldiff: ignore attribute order, ignore comments, normalizeWhitespace, normalize
 
+* gradle: Use version 1.10 (used to be 1.9)
+
 ### 0.3.0
 
 No written history
