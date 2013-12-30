@@ -9,6 +9,7 @@ This project contains some of my small Java based tools.
 * hexdump ... prints a hexdump of a file (similar to 'od')
 * html-unescape ... unescape all html entities included in a file
 * http-cat ... download a http url and print it to stdout
+* ln ... create links
 * little-proxy ... a forward proxy based on LittleProxy, see [little-proxy/README.md](little-proxy/README.md) for details
 * md5sum ... calculate the md5 hash of a file; emulates the unix command "md5sum"
 * sha1 ... calculate the SHA1 hash of a file; emulates the unix command "sha1sum"
@@ -45,6 +46,8 @@ Version History
 * gradle-local-repository: Fixed error handling
 
 * hexdump: New tool
+
+* ln: New tool
 
 * xmldiff: ignore attribute order, ignore comments, normalizeWhitespace, normalize
 

@@ -1,5 +1,7 @@
 defaultTasks 'dist'
 
+apply plugin: 'project-report'
+
 // Configure compiler options and other things - taken from
 // https://github.com/spring-projects/spring-framework/blob/master/build.gradle
 configure(subprojects) { project ->
@@ -47,4 +49,8 @@ configure(subprojects) { project ->
           delete "${projectDir}/${project.name}*log"
           delete "${buildDir}"
         }
+}
+
+htmlDependencyReport {
+  projects = project.allprojects
 }
