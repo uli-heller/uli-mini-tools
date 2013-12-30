@@ -7,12 +7,13 @@ sourceCompatibility=1.7
 targetCompatibility=1.7
 
 mainClassName='org.uli.ln.Ln'; // for 'gradle run' and MANIFEST.MF
-//dependencies {
-//    compile 'commons-codec:commons-codec:1.8'
-//}
-//repositories {
-//    mavenCentral()
-//}
+dependencies {
+    compile project(':util')
+    compile "commons-cli:commons-cli:1.2"
+}
+repositories {
+    mavenCentral()
+}
 
 jar {
     from {
