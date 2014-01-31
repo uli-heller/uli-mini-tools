@@ -49,8 +49,17 @@ configure(subprojects) { project ->
           delete "${projectDir}/${project.name}*log"
           delete "${buildDir}"
         }
+        test {
+          reports.html.enabled = false
+        }
 }
 
 htmlDependencyReport {
   projects = project.allprojects
+}
+
+task testReport(type: TestReport) {
+    destinationDir = file("$buildDir/reports/allTests")
+    // Include the results from the `test` task in all subprojects
+    reportOn subprojects*.test
 }
