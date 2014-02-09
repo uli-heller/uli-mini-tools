@@ -18,7 +18,7 @@ This project contains some of my small Java based tools.
 * tcpmon ... monitors tcp connections
 * xmldiff ... shows the differences between xml files (based on xmlunit)
 
-Precompiled binaries are available on the [releases](releases) page.
+Precompiled binaries are available on the [releases](../../releases) page.
 
 Build
 -----
