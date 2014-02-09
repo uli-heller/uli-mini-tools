@@ -18,8 +18,7 @@ This project contains some of my small Java based tools.
 * tcpmon ... monitors tcp connections
 * xmldiff ... shows the differences between xml files (based on xmlunit)
 
-See <https://github.com/uli-heller/uli-mini-tools-downloads> for precompiled
-binaries.
+Precompiled binaries are available on the <releases> page.
 
 Build
 -----
