@@ -15,13 +15,13 @@ import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
 
 public class LittleProxyServer {
 
-    public static void main1(String[] args) {
+    public static void main(String[] args) {
         HttpProxyServer server = DefaultHttpProxyServer.bootstrap()
-                    .withPort(8080)
+                    .withPort(8888)
                     .start();
     }
 
-    public static void main(String[] args) {
+    public static void main1(String[] args) {
         ChainedProxyManager chainProxyManager = new ChainedProxyManager() {
             public void onCommunicationError(String hostAndPort) {
                 // TODO Auto-generated method stub
