@@ -42,6 +42,10 @@ See [LICENSE.txt](LICENSE.txt).
 Version History
 ---------------
 
+### 0.5.0 (not yet released)
+
+TBD
+
 ### 0.4.0 - 2014-02-08
 
 * gradle-local-repository: Fixed error handling
