@@ -8,7 +8,8 @@ cli.with {
     v   longOpt:   'verbose',                                                  'Create debug output'
     a   longOpt:   'all',                                                      'Copy all tables mentioned in cfgFile'
     'C' longOpt:   'complete',                                                 'Copy all data'
-    'd' longOpt:   'delete',                                                   'Delete records on destination'
+    d   longOpt:   'dry-run',                                                  'Show SQL only, do not modify destination'
+    'D' longOpt:   'delete',                                                   'Delete records on destination'
     c   longOpt:   'config',    required: false, args: 1, argName: 'cfgFile',  'Config containing table definitions'
     f   longOpt:   'from',      required: true,  args: 1, argName: 'fromCfg',  'Config containing source jdbc parameters'
     t   longOpt:   'to',        required: true,  args: 1, argName: 'toCfg',    'Config containing destination jdbc parameters'
@@ -28,7 +29,8 @@ if (options.h) {
 boolean fVerbose          = options.v;
 boolean fAll              = options.a;
 boolean fComplete         = options.C;
-boolean fDelete           = options.d;
+boolean fDelete           = options.D;
+boolean fDryRun           = options.d;
 String fromPropertiesName = options.f;
 Properties fromProperties = new Properties();
 fromProperties.load(new FileInputStream(fromPropertiesName));
@@ -75,7 +77,7 @@ Sql toSql = Sql.newInstance(toProperties.'jdbc.url', toProperties.'jdbc.username
 
 tableNames.each { String tableName ->
   log "Processing table ${tableName}"
-  def constructorArgs = [tableName: tableName, log: log];
+  def constructorArgs = [tableName: tableName, log: log, dryRun: fDryRun];
   constructorArgs += tables.get(tableName);
   def tableDescription = new tableDescription(constructorArgs);
   tableDescription.copy(fromSql, toSql, fComplete, fDelete);
@@ -87,6 +89,7 @@ class tableDescription {
   String tableName;
   String id;
   String sequence;
+  boolean dryRun;
   def log;
 
   public boolean hasId() {
@@ -117,14 +120,14 @@ class tableDescription {
       try {
         String drop = "drop sequence ${sequenceName}";
         log ".. ${tableName} - dropSequence: ${drop}";
-        sql.execute(drop);
+        sqlExecute(sql, drop);
       } catch (SQLException e) {
         log ".. ${tableName} - unable to update sequence ${sequenceName} - ${e}";
       }
       try {
         String create = "create sequence ${sequenceName} start with ${lastUsedValue+1}";
         log ".. ${tableName} - createSequence: ${create}";
-        sql.execute(create);
+        sqlExecute(sql, create);
       } catch (SQLException e) {
         log ".. ${tableName} - unable to update sequence ${sequenceName} - ${e}";
       }
@@ -151,7 +154,23 @@ class tableDescription {
        delete += criteria.join(" and ");
     }
     log ".. ${delete}";
-    sql.execute(delete);
+    sqlExecute(sql, delete);
+  }
+
+  void sqlExecute(Sql sql, String cmd) {
+    if (dryRun) {
+      println "SQL: ${cmd}";
+    } else {
+      sql.execute(cmd);
+    }
+  }
+
+  void sqlExecute(Sql sql, String cmd, def row) {
+    if (dryRun) {
+      println "SQL: ${cmd} ${row}";
+    } else {
+      sql.execute(cmd, row);
+    }
   }
 
   public void copy(Sql from, Sql to, boolean fAllRecords, boolean fDeleteRecords) {
@@ -186,7 +205,9 @@ class tableDescription {
         } else {
           fDoUpdate = true;
         }
-        delete(to, previousId, thisId);
+        if (fDeleteRecords) {
+          delete(to, previousId, thisId);
+        }
 	previousId = thisId;
       } else {
         // ! thisTableHasId
@@ -207,12 +228,14 @@ class tableDescription {
     	  def updateSet = keySet.collect{ "${it} = :${it}" };
  	  sqlCommand = "update ${tableName} set ${updateSet.join(",")} where ${id}=${thisId}";
         }
-        to.execute(sqlCommand, row);
+        sqlExecute(to, sqlCommand, row);
       }
       to.commit(); // commit in order to free the blob objects
       ++cnt;
     }
-    delete(to, previousId, null);
+    if (fDeleteRecords) {
+      delete(to, previousId, null);
+    }
     log ".. ${tableName} - numberOfRecords: ${cnt}, max id: ${knownMaxId}, insertCnt: ${insertCnt}, updateCnt: ${updateCnt}";
     if (cnt > 0) {
       setSequenceForTable(to, knownMaxId);
