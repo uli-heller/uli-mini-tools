@@ -10,6 +10,7 @@ This project contains some of my small Java based tools.
 * html-unescape ... unescape all html entities included in a file
 * http-cat ... download a http url and print it to stdout
 * i18nbinder ... translate between a set of properties files and an XLS file [i18nbinder/README.md](i18nbinder/README.md)
+* jdbc-copy ... work in progress [jdbc-copy/README.md]/jdbc-copy/README.md)
 * ln ... create links
 * little-proxy ... a forward proxy based on LittleProxy, see [little-proxy/README.md](little-proxy/README.md) for details
 * md5sum ... calculate the md5 hash of a file; emulates the unix command "md5sum"
@@ -43,7 +44,7 @@ Version History
 
 ### 0.5.0 (not yet released)
 
-TBD
+* jdbc-copy: New tool (work in progress)
 
 ### 0.4.0 - 2014-02-08
 
