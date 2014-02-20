@@ -18,12 +18,12 @@ cli.with {
 def options = cli.parse(args);
 if (!options) {
   System.err.println "Unable to parse command line options -> EXIT";
-  System.exit(1);
+  return(1);
 }
 
 if (options.h) {
   cli.usage();
-  System.exit(0);
+  return(0);
 }
 
 boolean fVerbose          = options.v;
