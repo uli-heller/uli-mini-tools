@@ -41,7 +41,11 @@ task(groovyJar, dependsOn: copyToOutputLibs) {
     def files = [];
     new File("${project.buildDir}/output/libs").eachFile { files.add(it.getAbsolutePath()) };
     String classpath = files.join(File.pathSeparator);
-    org.codehaus.groovy.tools.FileSystemCompiler.commandLineCompile( ["-classpath", classpath, "-d", "${project.buildDir}/classes/main", project.groovyScriptName ] as String[] )
+    ant.java(classpath: classpath, classname: 'org.codehaus.groovy.tools.FileSystemCompiler') {
+      arg(value: '-d')
+      arg(value: "${project.buildDir}/classes/main")
+      arg(value: project.groovyScriptName)
+    }
   }
 }
 
