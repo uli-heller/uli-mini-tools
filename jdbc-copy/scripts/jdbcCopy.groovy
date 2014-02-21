@@ -39,7 +39,7 @@ Properties toProperties = new Properties();
 toProperties.load(new FileInputStream(toPropertiesName));
 
 def tableNames = options.arguments();
-def tables = [];
+def tables = [:];
 
 if (options.c) {
   String tableConfiguration = options.c;
