@@ -78,7 +78,10 @@ Sql toSql = Sql.newInstance(toProperties.'jdbc.url', toProperties.'jdbc.username
 tableNames.each { String tableName ->
   log "Processing table ${tableName}"
   def constructorArgs = [tableName: tableName, log: log, dryRun: fDryRun];
-  constructorArgs += tables.get(tableName);
+  def tablesEntry = tables.get(tableName);
+  if (tablesEntry) {
+    constructorArgs += tablesEntry;
+  }
   def tableDescription = new tableDescription(constructorArgs);
   tableDescription.copy(fromSql, toSql, fComplete, fDelete);
 }
