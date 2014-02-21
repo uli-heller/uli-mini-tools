@@ -30,7 +30,7 @@ def createNewSql = { Properties p ->
 }
 
 def count = { Sql sql, String tableName ->
-  def result = sql.rows("select count(1) c from ${tableName};" as String);
+  def result = sql.rows("select count(1) c from ${tableName};" as String); // yes, you could do a SQL injection here...
   return result[0][0];
 }
 
