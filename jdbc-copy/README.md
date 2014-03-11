@@ -15,7 +15,7 @@ Development
 
 ```
 ../gradlew dist
-./jdbc-copy*sh -f etc/h2-from.properties -t etc/h2-to.properties -c etc/tables.conf -a -v
+./scripts/groovy.sh ./scripts/test/jdbcCopyTest.groovy
 ```
 
 Issues
