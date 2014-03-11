@@ -137,8 +137,17 @@ class tableDescription {
         }
     }
 
+    String prepareIdForSql(def thisId) {
+        String prepared = thisId;
+        if (thisId instanceof String) {
+            prepared = "'${thisId}'"
+        }
+        return prepared;
+    }
+
     long countId(Sql sql, def thisId) {
-        String query = "select count(1) c from ${tableName} where ${id} = ${thisId}";
+        String prepared = prepareIdForSql(thisId);
+        String query = "select count(1) c from ${tableName} where ${id} = ${prepared}";
         def rows = sql.rows(query);
         return rows[0].c;
     }
@@ -146,11 +155,13 @@ class tableDescription {
     void delete(Sql sql, def minId, def maxId) {
         String delete = "delete from ${tableName}";
         List<String> criteria = [];
+        String preparedMinId = prepareIdForSql(minId);
+        String preparedMaxId = prepareIdForSql(maxId);
         if (minId) {
-            criteria << "${id} > ${minId}";
+            criteria << "${id} > ${preparedMinId}";
         }
         if (maxId) {
-            criteria << "${id} < ${maxId}";
+            criteria << "${id} < ${preparedMaxId}";
         }
         if (criteria) {
             delete += " where ";
@@ -199,7 +210,7 @@ class tableDescription {
             def thisId;
             if (thisTableHasId) {
                 thisId = row.get(id);
-                knownMaxId = max(knownMaxId, thisId);
+                knownMaxId = thisId; //max(knownMaxId, thisId);
                 long thisIdCnt = countId(to, thisId);
                 if (thisIdCnt <= 0) {
                     fDoInsert = true;
@@ -227,9 +238,10 @@ class tableDescription {
                     sqlCommand = "insert into ${tableName} ( ${insertFieldList} ) values ( ${insertColonizedFieldList} )";
                 } else if (fDoUpdate) {
                     assert thisId != null;
+                    String prepared = prepareIdForSql(thisId);
                     ++updateCnt;
                     def updateSet = keySet.collect{ "${it} = :${it}" };
-                    sqlCommand = "update ${tableName} set ${updateSet.join(",")} where ${id}=${thisId}";
+                    sqlCommand = "update ${tableName} set ${updateSet.join(",")} where ${id}=${prepared}";
                 }
                 sqlExecute(to, sqlCommand, row);
             }
