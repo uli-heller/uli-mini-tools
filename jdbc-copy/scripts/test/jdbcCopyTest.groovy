@@ -146,7 +146,7 @@ toSql.close();
         [ id:20, name:'Rewe',  city:'Ludwigsburg'  ],
         [ id:30, name:'Real',  city:'Stuttgart'    ],
     ].each {
-        sql.execute("insert into dealers(id, name, city) values (${it.id}, ${it.city}, ${it.city})");
+        sql.execute("insert into dealers(id, name, city) values (${it.id}, ${it.name}, ${it.city})");
     }
     sql.commit();
     sql.close();
@@ -188,7 +188,7 @@ toSql.close();
         [ id:'20', name:'Rewe',  city:'Ludwigsburg'  ],
         [ id:'30', name:'Real',  city:'Stuttgart'    ],
     ].each {
-        sql.execute("insert into dealers_v(id, name, city) values (${it.id}, ${it.city}, ${it.city})");
+        sql.execute("insert into dealers_v(id, name, city) values (${it.id}, ${it.name}, ${it.city})");
     }
     sql.commit();
     sql.close();
@@ -229,7 +229,7 @@ toSql.close();
         [ id:'205', name:'Rewe',  city:'Ludwigsburg'  ],
         [ id:'305', name:'Real',  city:'Stuttgart'    ],
     ].each {
-        sql.execute("insert into dealers(id, name, city) values (${it.id}, ${it.city}, ${it.city})");
+        sql.execute("insert into dealers(id, name, city) values (${it.id}, ${it.name}, ${it.city})");
     }
     sql.commit();
     sql.close();
@@ -258,7 +258,7 @@ toSql.close();
         [ id:'301', name:'Lidl',    city:'Stuttgart'    ],
         [ id:'405', name:'Kaisers', city:'Berlin'       ],
     ].each {
-        sql.execute("insert into dealers(id, name, city) values (${it.id}, ${it.city}, ${it.city})");
+        sql.execute("insert into dealers(id, name, city) values (${it.id}, ${it.name}, ${it.city})");
     }
     sql.commit();
     sql.close();
@@ -302,7 +302,7 @@ toSql.close();
         [ id:'20-5', name:'Rewe',  city:'Ludwigsburg'  ],
         [ id:'30-5', name:'Real',  city:'Stuttgart'    ],
     ].each {
-        sql.execute("insert into dealers_v(id, name, city) values (${it.id}, ${it.city}, ${it.city})");
+        sql.execute("insert into dealers_v(id, name, city) values (${it.id}, ${it.name}, ${it.city})");
     }
     sql.commit();
     sql.close();
@@ -331,7 +331,7 @@ toSql.close();
         [ id:'30-1', name:'Lidl',    city:'Stuttgart'    ],
         [ id:'40-5', name:'Kaisers', city:'Berlin'       ],
     ].each {
-        sql.execute("insert into dealers_v(id, name, city) values (${it.id}, ${it.city}, ${it.city})");
+        sql.execute("insert into dealers_v(id, name, city) values (${it.id}, ${it.name}, ${it.city})");
     }
     sql.commit();
     sql.close();
