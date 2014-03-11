@@ -233,17 +233,22 @@ class tableDescription {
                 if (fDoInsert) {
                     ++insertCnt;
                     String insertFieldList = keySet.join(',');
-                    def colonizedKeySet = keySet.collect{ ":${it}" };
-                    String insertColonizedFieldList = colonizedKeySet.join(',')
-                    sqlCommand = "insert into ${tableName} ( ${insertFieldList} ) values ( ${insertColonizedFieldList} )";
+                    //def colonizedKeySet = keySet.collect{ ":${it}" };
+                    //String insertColonizedFieldList = colonizedKeySet.join(',')
+                    //sqlCommand = "insert into ${tableName} ( ${insertFieldList} ) values ( ${insertColonizedFieldList} )";
+                    def values = keySet.collect{ prepareIdForSql(row.get(it)) };
+                    String insertValues = values.join(',');
+                    sqlCommand = "insert into ${tableName} ( ${insertFieldList} ) values ( ${insertValues} )";
                 } else if (fDoUpdate) {
                     assert thisId != null;
                     String prepared = prepareIdForSql(thisId);
                     ++updateCnt;
-                    def updateSet = keySet.collect{ "${it} = :${it}" };
+                    //def updateSet = keySet.collect{ "${it} = :${it}" };
+                    def updateSet = keySet.collect{ "${it} = ${prepareIdForSql(row.get(it))}" };
                     sqlCommand = "update ${tableName} set ${updateSet.join(",")} where ${id}=${prepared}";
                 }
-                sqlExecute(to, sqlCommand, row);
+                //sqlExecute(to, sqlCommand, row);
+                sqlExecute(to, sqlCommand);
             }
             to.commit(); // commit in order to free the blob objects
             ++cnt;
