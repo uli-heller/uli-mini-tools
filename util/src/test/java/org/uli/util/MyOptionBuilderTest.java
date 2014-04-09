@@ -1,6 +1,7 @@
 package org.uli.util;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 import org.apache.commons.cli.CommandLine;
@@ -17,6 +18,7 @@ public class MyOptionBuilderTest
 
     @Test
     public void testNew() {
+        @SuppressWarnings("unused")
         Option option = MyOptionBuilder.init().create("x");
     }
 
