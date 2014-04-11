@@ -71,7 +71,7 @@ public class Main {
     static public int run(String[] args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
         Reader r = new FileReader(args[0]);
         Main main = new Main();
-        System.out.println(main.parse(extensionEnum.MARKDOWN, builderEnum.HTML, r));
+        System.out.println(main.parse(inputType.MARKDOWN, outputType.HTML, r));
         if (1 == 1) {
             return 0;
         }
@@ -122,16 +122,16 @@ public class Main {
         return exitCode;
     }
     
-    String parse(extensionEnum inputFormat, builderEnum outputFormat, Reader text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
+    String parse(inputType inputFormat, outputType outputType, Reader text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
         StringWriter writer = new StringWriter();
-        DocumentBuilder builder = outputFormat.getBuilder(writer);
+        DocumentBuilder builder = outputType.getBuilder(writer);
         MarkupLanguage language = inputFormat.getMarkupLanguage();
         MarkupParser parser = new MarkupParser(language, builder);
         parser.parse(text);
         return writer.toString();
     }
     
-    enum extensionEnum {
+    enum inputType {
         TEXTILE("textile", new TextileLanguage()),
         TRAC("trac", new TracWikiLanguage()),
         MEDIAWIKI("mediawiki", new MediaWikiLanguage()),
@@ -139,11 +139,11 @@ public class Main {
         TWIKI("twiki", new TWikiLanguage()),
         MARKDOWN("md", new MarkdownLanguage());
         
-        String extension;
+        String name;
         MarkupLanguage language;
         
-        extensionEnum(String extension, MarkupLanguage language) {
-            this.extension = extension;
+        inputType(String name, MarkupLanguage language) {
+            this.name = name;
             this.language = language;
         }
         
@@ -152,7 +152,7 @@ public class Main {
         }
     }
     
-    enum builderEnum {
+    enum outputType {
         HTML("html", HtmlDocumentBuilder.class),
         DOCBOOK("docbook", DocBookDocumentBuilder.class),
         XSLFO("xslfo", XslfoDocumentBuilder.class);
@@ -160,7 +160,7 @@ public class Main {
         String name;
         Class<?> builderClass;
         
-        builderEnum(String name, Class<?> builderClass) {
+        outputType(String name, Class<?> builderClass) {
             this.name = name;
             this.builderClass = builderClass;
         }
