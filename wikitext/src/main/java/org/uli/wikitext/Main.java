@@ -81,7 +81,6 @@ public class Main {
                 }
                 if (commandLine.hasOption("f")) {
                     String fname = commandLine.getOptionValue("f");
-                    System.err.println(fname);
                     inputReader = new FileReader(fname);
                     it = inputType.fromName(getExtension(fname));
                 }
