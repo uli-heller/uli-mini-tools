@@ -1,17 +1,15 @@
 package org.uli.wikitext;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.Reader;
-import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -27,7 +25,6 @@ import org.eclipse.mylyn.wikitext.core.parser.builder.DocBookDocumentBuilder;
 import org.eclipse.mylyn.wikitext.core.parser.builder.HtmlDocumentBuilder;
 import org.eclipse.mylyn.wikitext.core.parser.builder.XslfoDocumentBuilder;
 import org.eclipse.mylyn.wikitext.core.parser.markup.MarkupLanguage;
-import org.eclipse.mylyn.wikitext.core.util.ServiceLocator;
 import org.eclipse.mylyn.wikitext.markdown.core.MarkdownLanguage;
 import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
 import org.eclipse.mylyn.wikitext.textile.core.TextileLanguage;
@@ -38,20 +35,6 @@ import org.uli.util.MyOptionBuilder;
 public class Main {
 
     static private final String NAME = "wikitext";
-
-    // private boolean fSymbolicLink = false;
-    // Taken from http://www.java-only.com/LoadTutorial.javaonly?id=115
-    // Please note: The ordering of the parameters is similar to the
-    // unix command "ln"
-    public void ln(String to, String from, boolean fSymbolicLink) throws IOException {
-        Path toPath = FileSystems.getDefault().getPath(to);
-        Path fromPath = FileSystems.getDefault().getPath(from);
-        if (fSymbolicLink) {
-            Files.createSymbolicLink(fromPath, toPath);
-        } else {
-            Files.createLink(fromPath, toPath);
-        }
-    }
 
     public static void main(String[] args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
         int exitCode = run(args);
@@ -69,21 +52,24 @@ public class Main {
     }
 
     static public int run(String[] args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
-        Reader r = new FileReader(args[0]);
         Main main = new Main();
-        System.out.println(main.parse(inputType.MARKDOWN, outputType.HTML, r));
-        if (1 == 1) {
-            return 0;
-        }
         Options options = new Options();
-        Option h = MyOptionBuilder.init().withLongOpt("help").withDescription("print help").create("h");
-        Option s = MyOptionBuilder.init().withLongOpt("symbolic").withDescription("create a symbolic link instead of a hard link").create("s");
-        options.addOption(h);
-        options.addOption(s);
+        Option[] add = new Option[] {
+           MyOptionBuilder.init().withLongOpt("help").withDescription("print help").create("h"),
+           MyOptionBuilder.init().withLongOpt("from").hasArg().withDescription("input file").create("f"),
+           MyOptionBuilder.init().withLongOpt("to").hasArg().withDescription("output file").create("t"),
+           MyOptionBuilder.init().withLongOpt("input-format").hasArg().withDescription("input format").create("i"),
+           MyOptionBuilder.init().withLongOpt("output-format").hasArg().withDescription("output format").create("o")
+        };
+        for (Option o : add) {
+            options.addOption(o);
+        }
         int exitCode = 0;
         boolean fHelp = false;
-        boolean fSymbolicLink = false;
-        Main ln = new Main();
+        inputType it = inputType.UNKNOWN;
+        outputType ot = outputType.UNKNOWN;
+        Reader inputReader = null;
+        Writer outputWriter = null;
         for (;;) {
             CommandLineParser commandLineParser = new PosixParser();
             try {
@@ -93,24 +79,50 @@ public class Main {
                     printHelp(System.out, options, null);
                     break;
                 }
-                fSymbolicLink = commandLine.hasOption("s");
+                if (commandLine.hasOption("f")) {
+                    String fname = commandLine.getOptionValue("f");
+                    System.err.println(fname);
+                    inputReader = new FileReader(fname);
+                    it = inputType.fromName(getExtension(fname));
+                }
+                if (commandLine.hasOption("i")) {
+                    String fmtname = commandLine.getOptionValue("i");
+                    it = inputType.fromName(fmtname);
+                }
+                if (commandLine.hasOption("t")) {
+                    String fname = commandLine.getOptionValue("t");
+                    outputWriter = new FileWriter(fname);
+                    ot = outputType.fromName(getExtension(fname));
+                }
+                if (commandLine.hasOption("o")) {
+                    String fmtname = commandLine.getOptionValue("o");
+                    ot = outputType.fromName(fmtname);
+                }
                 String[] remainingArgs = commandLine.getArgs();
-                if (remainingArgs.length != 2) {
+                if (remainingArgs.length != 0) {
                     printHelp(System.err, options, null);
-                    System.err.println("Expecting 2 command line arguments - got " + remainingArgs.length);
+                    System.err.println("Expecting no command line arguments - got " + remainingArgs.length);
                     exitCode = 11;
                     break;
                 }
-                int idx = -1;
-                String to = remainingArgs[++idx];
-                String from = remainingArgs[++idx];
-                try {
-                    ln.ln(to, from, fSymbolicLink);
-                } catch (IOException ioe) {
-                    System.err.println(ioe);
-                    exitCode = 1;
+                if (inputReader == null) {
+                    inputReader = new InputStreamReader(System.in);
                 }
-                return exitCode;
+                if (outputWriter == null) {
+                    outputWriter = new OutputStreamWriter(System.out);
+                }
+                if (it == inputType.UNKNOWN) {
+                    System.err.println("Unkown input type");
+                    exitCode = 12;
+                    break;
+                }
+                if (ot == outputType.UNKNOWN) {
+                    System.err.println("Unkown output type");
+                    exitCode = 13;
+                    break;
+                }
+                main.parse(it, inputReader, ot, outputWriter);
+                break;
             } catch (ParseException e) {
                 System.err.println(NAME + ": Command line error - " + e.getMessage());
                 HelpFormatter helpFormatter = new HelpFormatter();
@@ -122,16 +134,24 @@ public class Main {
         return exitCode;
     }
     
-    String parse(inputType inputFormat, outputType outputType, Reader text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
-        StringWriter writer = new StringWriter();
-        DocumentBuilder builder = outputType.getBuilder(writer);
+    void parse(inputType inputFormat, Reader inputReader, outputType outputType, Writer outputWriter) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
+        DocumentBuilder builder = outputType.getBuilder(outputWriter);
         MarkupLanguage language = inputFormat.getMarkupLanguage();
         MarkupParser parser = new MarkupParser(language, builder);
-        parser.parse(text);
-        return writer.toString();
+        parser.parse(inputReader);
+    }
+    
+    private static final String getExtension(String filename) {
+        String[] tokens = filename.split("\\.(?=[^\\.]+$)");
+        String result = "";
+        if (tokens.length > 1) {
+            result = tokens[1];
+        }
+        return result;
     }
     
     enum inputType {
+        UNKNOWN("", null),
         TEXTILE("textile", new TextileLanguage()),
         TRAC("trac", new TracWikiLanguage()),
         MEDIAWIKI("mediawiki", new MediaWikiLanguage()),
@@ -139,29 +159,43 @@ public class Main {
         TWIKI("twiki", new TWikiLanguage()),
         MARKDOWN("md", new MarkdownLanguage());
         
-        String name;
+        String inputTypeName;
         MarkupLanguage language;
         
         inputType(String name, MarkupLanguage language) {
-            this.name = name;
+            this.inputTypeName = name;
             this.language = language;
         }
         
         public MarkupLanguage getMarkupLanguage() {
             return language;
         }
-    }
-    
+
+        private final static inputType fromName(String name) {
+            inputType it = inputType.UNKNOWN;
+            for (inputType thisInputType : inputType.values()) {
+                if (thisInputType != inputType.UNKNOWN) {
+                    if (name.equals(thisInputType.inputTypeName)) {
+                        it = thisInputType;
+                        break;
+                    }
+                }
+            }
+            return it;
+        }
+    } // inputType
+
     enum outputType {
+        UNKNOWN("", null),
         HTML("html", HtmlDocumentBuilder.class),
         DOCBOOK("docbook", DocBookDocumentBuilder.class),
         XSLFO("xslfo", XslfoDocumentBuilder.class);
         
-        String name;
+        String outputTypeName;
         Class<?> builderClass;
         
         outputType(String name, Class<?> builderClass) {
-            this.name = name;
+            this.outputTypeName = name;
             this.builderClass = builderClass;
         }
         
@@ -170,5 +204,18 @@ public class Main {
             DocumentBuilder db = (DocumentBuilder) ctor.newInstance(new Object[] { out });
             return db;
         }
-    }
+        
+        private final static outputType fromName(String name) {
+            outputType ot = outputType.UNKNOWN;
+            for (outputType thisOutputType : outputType.values()) {
+                if (thisOutputType != outputType.UNKNOWN) {
+                    if (name.equals(thisOutputType.outputTypeName)) {
+                        ot = thisOutputType;
+                        break;
+                    }
+                }
+            }
+            return ot;
+        }
+    } // outputType
 }
