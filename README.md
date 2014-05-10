@@ -46,7 +46,7 @@ Version History
 
 * jdbc-copy: New tool (work in progress)
 * Use groovy-2.2.1 to compile all groovy scripts
-* gradlew: Use version 1.11 (used to be 1.10)
+* gradlew: Use version 1.12 (used to be 1.10, 1.11)
 
 ### 0.4.0 - 2014-02-08
 

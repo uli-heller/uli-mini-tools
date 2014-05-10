@@ -63,3 +63,7 @@ task testReport(type: TestReport) {
     // Include the results from the `test` task in all subprojects
     reportOn subprojects*.test
 }
+
+task wrapper(type: Wrapper) {
+  gradleVersion = "1.12"
+}
