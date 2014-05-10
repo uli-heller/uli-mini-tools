@@ -54,6 +54,10 @@ configure(subprojects) { project ->
         }
 }
 
+configure(allprojects) { project ->
+  ext.groovyVersion = '2.3.0'
+}
+
 htmlDependencyReport {
   projects = project.allprojects
 }

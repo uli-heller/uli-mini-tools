@@ -7,7 +7,7 @@ mainClassName='jdbcCopy'; // for 'gradle run' and MANIFEST.MF
 ext.groovyScriptName="${projectDir}/scripts/jdbcCopy.groovy";
 
 dependencies {
-  compile 'org.codehaus.groovy:groovy-all:2.2.2'
+  compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
   testCompile 'junit:junit:4.11'
   runtime "commons-cli:commons-cli:1.2"
   runtime 'org.apache.ant:ant:1.9.3'
