@@ -16,6 +16,7 @@ This project contains some of my small Java based tools.
 * md5sum ... calculate the md5 hash of a file; emulates the unix command "md5sum"
 * sha1 ... calculate the SHA1 hash of a file; emulates the unix command "sha1sum"
 * sha256 ... calculate the SHA256 hash of a file; emulates the unix command "sha256sum"
+* sha512 ... calculate the SHA512 hash of a file; emulates the unix command "sha512sum"
 * tcpmon ... monitors tcp connections
 * wsdldiff ... shows the differences between wsdl files (based on soa-model-*)
 * xmldiff ... shows the differences between xml files (based on xmlunit)
@@ -46,6 +47,10 @@ Version History
 ### 0.5.0 (not yet released)
 
 * jdbc-copy: New tool (work in progress)
+
+* sha256: Renamed from sha2
+
+* sha512: New tool
 
 * wikitext: New tool
 
