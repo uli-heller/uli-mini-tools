@@ -1,11 +1,11 @@
-package org.uli.sha2;
+package org.uli.sha256;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class SHA2 {
+public class SHA256 {
 
     public String sha2hex(String input) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         byte[] bytesOfMessage = input.getBytes();
@@ -21,9 +21,9 @@ public class SHA2 {
     }
 
     static public void main(String[] args) throws Exception {
-        SHA2 sha2 = new SHA2();
+        SHA256 sha256 = new SHA256();
         for (String arg : args) {
-            System.out.println(sha2.sha2hex(arg));
+            System.out.println(sha256.sha2hex(arg));
         }
     }
 }

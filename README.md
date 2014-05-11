@@ -15,7 +15,7 @@ This project contains some of my small Java based tools.
 * little-proxy ... a forward proxy based on LittleProxy, see [little-proxy/README.md](little-proxy/README.md) for details
 * md5sum ... calculate the md5 hash of a file; emulates the unix command "md5sum"
 * sha1 ... calculate the SHA1 hash of a file; emulates the unix command "sha1sum"
-* sha2 ... calculate the SHA256 hash of a file; emulates the unix command "sha256sum"
+* sha256 ... calculate the SHA256 hash of a file; emulates the unix command "sha256sum"
 * tcpmon ... monitors tcp connections
 * wsdldiff ... shows the differences between wsdl files (based on soa-model-*)
 * xmldiff ... shows the differences between xml files (based on xmlunit)
