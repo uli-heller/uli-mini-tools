@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class SHA2 {
 
-    public String sha1hex(String input) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public String sha2hex(String input) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         byte[] bytesOfMessage = input.getBytes();
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         byte[] thedigest = md.digest(bytesOfMessage);
@@ -21,9 +21,9 @@ public class SHA2 {
     }
 
     static public void main(String[] args) throws Exception {
-        SHA2 sha1 = new SHA2();
+        SHA2 sha2 = new SHA2();
         for (String arg : args) {
-            System.out.println(sha1.sha1hex(arg));
+            System.out.println(sha2.sha2hex(arg));
         }
     }
 }
