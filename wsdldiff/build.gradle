@@ -1,0 +1,36 @@
+defaultTasks 'sh', 'bat'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+mainClassName='org.uli.wsdldiff.Main'; // for 'gradle run' and MANIFEST.MF
+
+dependencies {
+  compile "org.codehaus.groovy:groovy:${groovyVersion}"
+  //runtime "commons-cli:commons-cli:1.2"
+  compile('com.predic8:soa-model-core:1.4.2.5') //{
+  //  transitive = false
+  //}
+}
+
+repositories {
+    mavenCentral()
+    maven {
+      url 'http://repository.membrane-soa.org/content/repositories/releases'
+    }
+}
+
+jar {
+    from {
+      configurations.runtime.collect {
+         it.isDirectory() ? it : zipTree(it).matching {
+            exclude { detail ->
+               detail.getFile().getParentFile().getName().equals("META-INF") && !detail.getFile().getName().equals("dgminfo")
+            }
+         }
+      }
+    }
+    manifest {
+        attributes("Main-Class": mainClassName)
+    }
+}

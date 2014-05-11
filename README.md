@@ -17,6 +17,7 @@ This project contains some of my small Java based tools.
 * sha1 ... calculate the SHA1 hash of a file; emulates the unix command "sha1sum"
 * sha2 ... calculate the SHA256 hash of a file; emulates the unix command "sha256sum"
 * tcpmon ... monitors tcp connections
+* wsdldiff ... shows the differences between wsdl files (based on soa-model-*)
 * xmldiff ... shows the differences between xml files (based on xmlunit)
 
 Precompiled binaries are available on the [releases](../../releases) page.
@@ -47,6 +48,8 @@ Version History
 * jdbc-copy: New tool (work in progress)
 
 * wikitext: New tool
+
+* wsdldiff: New tool
 
 * Use groovy-2.3.0 to compile all groovy scripts
 
