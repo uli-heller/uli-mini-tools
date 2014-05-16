@@ -66,7 +66,7 @@ set CMD_LINE_ARGS=%$
 @rem Setup the command line
 
 set JAR_NAME=%0
-findJar JAR_NAME %0
+call :findJar JAR_NAME %0
 ::if not exist %JAR_NAME% set JAR_NAME=%0.bat
 
 "%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% -classpath "%CLASSPATH%" -jar %JAR_NAME% %CMD_LINE_ARGS% & exit /B
