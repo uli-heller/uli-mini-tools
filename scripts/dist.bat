@@ -66,7 +66,8 @@ set CMD_LINE_ARGS=%$
 @rem Setup the command line
 
 set JAR_NAME=%0
-if not exist %JAR_NAME% set JAR_NAME=%0.bat
+findJar JAR_NAME %0
+::if not exist %JAR_NAME% set JAR_NAME=%0.bat
 
 "%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% -classpath "%CLASSPATH%" -jar %JAR_NAME% %CMD_LINE_ARGS% & exit /B
 
@@ -85,6 +86,28 @@ if "%OS%"=="Windows_NT" endlocal
 
 :omega
 exit /B
+
+:findJar
+setlocal
+:: Check for file existence first
+set J=%2
+if exist %J% goto :finish
+:: Append .bat and check for existence
+set J=%2.bat
+if exist %J% goto :finish
+:: Search PATH
+for %%i in (%2) do set J=%%~$PATH:i
+if not ".%J%" == "." goto :finish
+for %%i in (%2.bat) do set J=%%~$PATH:i
+if not ".%J%" == "." goto :finish
+set J=%2
+
+:finish
+(
+  endlocal
+  set "%~1=%J%"
+)
+goto:eof
 
 EOF
 :: DO NOT DELETE THIS LINE AND THE NEXT CHARACTER!

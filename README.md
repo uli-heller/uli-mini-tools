@@ -60,6 +60,8 @@ Version History
 
 * gradlew: Use version 1.12 (used to be 1.10, 1.11)
 
+* Fix: Run mini tools via PATH on Windows
+
 ### 0.4.0 - 2014-02-08
 
 * gradle-local-repository: Fixed error handling
