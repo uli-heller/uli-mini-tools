@@ -5,6 +5,24 @@
 @rem  Gradle startup script for Windows
 @rem
 @rem ##########################################################################
+@rem
+@rem
+@rem We have to check these variations:
+@rem   - start from current working directory:
+@rem        "xxx.bat"
+@rem   - start from current working directory without specifying the extension:
+@rem        "xxx"
+@rem   - start with directory spec:
+@rem        "bin\xxx.bat"
+@rem   - start with directory spec without extension:
+@rem        "bin\xxx"
+@rem   - start via PATH:
+@rem        "set PATH=bin;%PATH%"
+@rem        "xxx.bat"
+@rem   - start via PATH without extension:
+@rem        "set PATH=bin;%PATH%"
+@rem        "xxx"
+@rem
 
 @rem Set local scope for the variables with windows NT shell
 if "%OS%"=="Windows_NT" setlocal
