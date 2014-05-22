@@ -44,6 +44,10 @@ See [LICENSE.txt](LICENSE.txt).
 Version History
 ---------------
 
+### 0.6.0 (not yet released)
+
+* Use groovy-2.3.1 to compile all groovy scripts
+
 ### 0.5.1 2014-05-22
 
 * jdbc-copy: New tool (work in progress)
