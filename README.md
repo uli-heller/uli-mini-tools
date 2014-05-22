@@ -44,7 +44,7 @@ See [LICENSE.txt](LICENSE.txt).
 Version History
 ---------------
 
-### 0.5.0 (not yet released)
+### 0.5.1 2014-05-22
 
 * jdbc-copy: New tool (work in progress)
 
@@ -61,6 +61,8 @@ Version History
 * gradlew: Use version 1.12 (used to be 1.10, 1.11)
 
 * Fix: Run mini tools via PATH on Windows
+
+### 0.5.0 - unpublished
 
 ### 0.4.0 - 2014-02-08
 
