@@ -6,15 +6,7 @@ apply plugin: 'application'
 sourceCompatibility=1.5
 targetCompatibility=1.5
 
-mainClassName='org.uli.sha256.SHA256'; // for 'gradle run' and MANIFEST.MF
-
-dependencies {
-  testCompile 'junit:junit:4.11'
-}
-
-repositories {
-    mavenCentral()
-}
+mainClassName='org.uli.sha1.SHA1Sum'; // for 'gradle run' and MANIFEST.MF
 
 jar {
     from {
