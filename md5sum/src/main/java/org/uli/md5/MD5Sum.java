@@ -9,17 +9,13 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.uli.util.FileToByteArray;
+
 public class MD5Sum {
 
-    public String md5hex(String input) throws NoSuchAlgorithmException, UnsupportedEncodingException, IOException {
-        File f = new File(input);
-        long fl = f.length();
-        byte[] bytes = new byte[(int) fl];
-        InputStream is = new FileInputStream(f);
-        is.read(bytes);
-        is.close();
+    public String md5hex(byte[] bytesOfMessage) throws NoSuchAlgorithmException, UnsupportedEncodingException, IOException {
         MessageDigest md = MessageDigest.getInstance("MD5");
-        byte[] thedigest = md.digest(bytes);
+        byte[] thedigest = md.digest(bytesOfMessage);
         BigInteger bigInt = new BigInteger(1, thedigest);
         String hashtext = bigInt.toString(16);
         // Now we need to zero pad it if you actually want the full 32 chars.
@@ -31,8 +27,14 @@ public class MD5Sum {
 
     static public void main(String[] args) throws Exception {
         MD5Sum md5 = new MD5Sum();
-        for (String arg : args) {
-            System.out.println(md5.md5hex(arg));
+        if (args.length <= 0) {
+          FileToByteArray ftba = new FileToByteArray(System.in);
+          System.out.println(md5.md5hex(ftba.getBytes()) + "  " + ftba.getFilename());
+        } else {
+          for (String arg : args) {
+            FileToByteArray ftba = new FileToByteArray(arg);
+            System.out.println(md5.md5hex(ftba.getBytes()) + "  " + ftba.getFilename());
+          }
         }
     }
 }

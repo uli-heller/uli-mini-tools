@@ -10,15 +10,11 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.uli.util.FileToByteArray;
+
 public class SHA1Sum {
 
-    public String sha1hex(String input) throws NoSuchAlgorithmException, IOException {
-        File f = new File(input);
-        long fl = f.length();
-        byte[] bytesOfMessage = new byte[(int) fl];
-        InputStream is = new FileInputStream(f);
-        is.read(bytesOfMessage);
-        is.close();
+    public String sha1hex(byte[] bytesOfMessage) throws NoSuchAlgorithmException, IOException {
         MessageDigest md = MessageDigest.getInstance("SHA1");
         byte[] thedigest = md.digest(bytesOfMessage);
         BigInteger bigInt = new BigInteger(1, thedigest);
@@ -32,8 +28,14 @@ public class SHA1Sum {
 
     static public void main(String[] args) throws Exception {
         SHA1Sum sha1 = new SHA1Sum();
-        for (String arg : args) {
-            System.out.println(sha1.sha1hex(arg));
+        if (args.length <= 0) {
+          FileToByteArray ftba = new FileToByteArray(System.in);
+          System.out.println(sha1.sha1hex(ftba.getBytes()) + "  " + ftba.getFilename());
+        } else {
+          for (String arg : args) {
+            FileToByteArray ftba = new FileToByteArray(arg);
+            System.out.println(sha1.sha1hex(ftba.getBytes()) + "  " + ftba.getFilename());
+          }
         }
     }
 }

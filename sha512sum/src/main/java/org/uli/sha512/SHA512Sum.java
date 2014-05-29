@@ -9,15 +9,11 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.uli.util.FileToByteArray;
+
 public class SHA512Sum {
 
-    public String sha2hex(String input) throws NoSuchAlgorithmException, UnsupportedEncodingException, IOException {
-        File f = new File(input);
-        long fl = f.length();
-        byte[] bytesOfMessage = new byte[(int) fl];
-        InputStream is = new FileInputStream(f);
-        is.read(bytesOfMessage);
-        is.close();
+    public String sha2hex(byte[] bytesOfMessage) throws NoSuchAlgorithmException, UnsupportedEncodingException, IOException {
         MessageDigest md = MessageDigest.getInstance("SHA-512");
         byte[] thedigest = md.digest(bytesOfMessage);
         BigInteger bigInt = new BigInteger(1, thedigest);
@@ -31,8 +27,14 @@ public class SHA512Sum {
 
     static public void main(String[] args) throws Exception {
         SHA512Sum sha512 = new SHA512Sum();
-        for (String arg : args) {
-            System.out.println(sha512.sha2hex(arg));
+        if (args.length <= 0) {
+          FileToByteArray ftba = new FileToByteArray(System.in);
+          System.out.println(sha512.sha2hex(ftba.getBytes()) + "  " + ftba.getFilename());
+        } else {
+          for (String arg : args) {
+            FileToByteArray ftba = new FileToByteArray(arg);
+            System.out.println(sha512.sha2hex(ftba.getBytes()) + "  " + ftba.getFilename());
+          }
         }
     }
 }

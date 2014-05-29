@@ -9,6 +9,7 @@ targetCompatibility=1.5
 mainClassName='org.uli.sha512.SHA512Sum'; // for 'gradle run' and MANIFEST.MF
 
 dependencies {
+  compile project(':util');
   testCompile 'junit:junit:4.11'
 }
 
