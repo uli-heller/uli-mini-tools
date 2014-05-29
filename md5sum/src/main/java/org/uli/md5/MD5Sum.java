@@ -12,13 +12,12 @@ import java.security.NoSuchAlgorithmException;
 public class MD5Sum {
 
     public String md5hex(String input) throws NoSuchAlgorithmException, UnsupportedEncodingException, IOException {
-	File f = new File(input);
-	long fl = f.length();
-	byte[] bytes = new byte[(int) fl];
-	InputStream is = new FileInputStream(f);
-	is.read(bytes);
-	is.close();
-
+        File f = new File(input);
+        long fl = f.length();
+        byte[] bytes = new byte[(int) fl];
+        InputStream is = new FileInputStream(f);
+        is.read(bytes);
+        is.close();
         MessageDigest md = MessageDigest.getInstance("MD5");
         byte[] thedigest = md.digest(bytes);
         BigInteger bigInt = new BigInteger(1, thedigest);
