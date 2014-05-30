@@ -1,9 +1,6 @@
 package org.uli.sha256;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -28,13 +25,13 @@ public class SHA256Sum {
     static public void main(String[] args) throws Exception {
         SHA256Sum sha256 = new SHA256Sum();
         if (args.length <= 0) {
-          FileToByteArray ftba = new FileToByteArray(System.in);
-          System.out.println(sha256.sha2hex(ftba.getBytes()) + "  " + ftba.getFilename());
-        } else {
-          for (String arg : args) {
-            FileToByteArray ftba = new FileToByteArray(arg);
+            FileToByteArray ftba = new FileToByteArray(System.in);
             System.out.println(sha256.sha2hex(ftba.getBytes()) + "  " + ftba.getFilename());
-          }
+        } else {
+            for (String arg : args) {
+                FileToByteArray ftba = new FileToByteArray(arg);
+                System.out.println(sha256.sha2hex(ftba.getBytes()) + "  " + ftba.getFilename());
+            }
         }
     }
 }
