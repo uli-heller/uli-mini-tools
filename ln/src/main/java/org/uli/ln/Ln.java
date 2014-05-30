@@ -17,21 +17,21 @@ import org.apache.commons.cli.PosixParser;
 import org.uli.util.MyOptionBuilder;
 
 public class Ln {
-    static private final String NAME="ln";
 
-    //private boolean fSymbolicLink = false;
+    static private final String NAME = "ln";
 
+    // private boolean fSymbolicLink = false;
     // Taken from http://www.java-only.com/LoadTutorial.javaonly?id=115
     // Please note: The ordering of the parameters is similar to the
     // unix command "ln"
     public void ln(String to, String from, boolean fSymbolicLink) throws IOException {
-        Path toPath=FileSystems.getDefault().getPath(to);
-        Path fromPath=FileSystems.getDefault().getPath(from);
-	if (fSymbolicLink) {
-	    Files.createSymbolicLink(fromPath, toPath);
-	} else {
-	    Files.createLink(fromPath, toPath);
-	}
+        Path toPath = FileSystems.getDefault().getPath(to);
+        Path fromPath = FileSystems.getDefault().getPath(from);
+        if (fSymbolicLink) {
+            Files.createSymbolicLink(fromPath, toPath);
+        } else {
+            Files.createLink(fromPath, toPath);
+        }
     }
 
     public static void main(String[] args) {
@@ -72,28 +72,28 @@ public class Ln {
                 String[] remainingArgs = commandLine.getArgs();
                 if (remainingArgs.length != 2) {
                     printHelp(System.err, options, null);
-                    System.err.println("Expecting 2 command line arguments - got "+remainingArgs.length);
+                    System.err.println("Expecting 2 command line arguments - got " + remainingArgs.length);
                     exitCode = 11;
                     break;
                 }
-		int idx = -1;
-		String to = remainingArgs[++idx];
-		String from = remainingArgs[++idx];
-		try {
-		    ln.ln(to, from, fSymbolicLink);
-		} catch (IOException ioe) {
-		    System.err.println(ioe);
-		    exitCode=1;
-		}
-		return exitCode;
+                int idx = -1;
+                String to = remainingArgs[++idx];
+                String from = remainingArgs[++idx];
+                try {
+                    ln.ln(to, from, fSymbolicLink);
+                } catch (IOException ioe) {
+                    System.err.println(ioe);
+                    exitCode = 1;
+                }
+                return exitCode;
             } catch (ParseException e) {
                 System.err.println(NAME + ": Command line error - " + e.getMessage());
                 HelpFormatter helpFormatter = new HelpFormatter();
                 helpFormatter.printHelp(NAME, options);
                 exitCode = 10;
                 break;
-	    }
-	}
-	return exitCode;
+            }
+        }
+        return exitCode;
     }
 }
