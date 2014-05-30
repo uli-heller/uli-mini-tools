@@ -8,6 +8,7 @@ targetCompatibility=1.5
 
 mainClassName='org.uli.base64.Base64'; // for 'gradle run' and MANIFEST.MF
 dependencies {
+    compile project(':util');
     compile 'commons-codec:commons-codec:1.8'
 }
 repositories {
