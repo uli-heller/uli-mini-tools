@@ -44,9 +44,11 @@ See [LICENSE.txt](LICENSE.txt).
 Version History
 ---------------
 
-### 0.6.0 (not yet released)
+### 0.7.0 (not yet released)
 
-* Use groovy-2.3.2 to compile all groovy scripts
+### 0.6.0 2014-07-05
+
+* Use groovy-2.3.3 to compile all groovy scripts
 
 * Renamed: sha1 -> sha1sum, sha256 -> sha256sum, sha512 -> sha512sum
 
