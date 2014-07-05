@@ -66,10 +66,20 @@ for (Ivy ivy : allIvys) {
   GroupArtifactVersion gav = ivy.groupArtifactVersion;
   File folder = new File(toDir, "${gav.group}/${gav.artifact}/${gav.version}"); 
   folder.mkdirs();
-  ant.copy(file: ivy.ivyXml, tofile: new File(folder, "ivy-${gav.version}.xml"));
+  // gradle-2.0 doesn't provide publications within the ivy.xml file,
+  // so we'll create them...
+  def xmlRoot = new XmlParser().parse(ivy.ivyXml);
+  def publications = xmlRoot.'**'.publications[0];
+  boolean fAddPublications = publications.children().size() <= 0;
   allJars.findAll{ jar -> jar.groupArtifactVersion.equals(gav) }.each {
     ant.copy(file: it.jar, todir: folder);
+    if (fAddPublications) {
+      publications.appendNode('artifact', [name: it.groupArtifactVersion.artifact, type: 'jar', ext: 'jar', conf: 'master']);
+    }
   }
+  def writer = new FileWriter(new File(folder, "ivy-${gav.version}.xml"));
+  new XmlNodePrinter(new PrintWriter(writer)).print(xmlRoot);
+  //ant.copy(file: ivy.ivyXml, tofile: new File(folder, "ivy-${gav.version}.xml"));
 }
 
 GroupArtifactVersion parseGroupArtifactVersion(File f) {

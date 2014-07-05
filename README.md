@@ -47,7 +47,10 @@ Version History
 ### 0.6.0 (not yet released)
 
 * Use groovy-2.3.2 to compile all groovy scripts
+
 * Renamed: sha1 -> sha1sum, sha256 -> sha256sum, sha512 -> sha512sum
+
+* gradle-local-repository: Compatibility with gradle-2.0
 
 ### 0.5.1 2014-05-22
 
