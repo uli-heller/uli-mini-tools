@@ -52,7 +52,7 @@ groovyHomeDir.eachFileRecurse { File file ->
   }
 }
 
-// search for pom files - not used at the moment
+// search for pom files - required for all those parent artifacts
 String matchPom = ".pom";
 groovyHomeDir.eachFileRecurse { File file ->
   String name = file.getName();
@@ -66,6 +66,9 @@ for (Ivy ivy : allIvys) {
   GroupArtifactVersion gav = ivy.groupArtifactVersion;
   File folder = new File(toDir, "${gav.group}/${gav.artifact}/${gav.version}"); 
   folder.mkdirs();
+  allPoms.findAll{ jar -> jar.groupArtifactVersion.equals(gav) }.each {
+    ant.copy(file: it.pom, todir: folder);
+  }
   // gradle-2.0 doesn't provide publications within the ivy.xml file,
   // so we'll create them...
   def xmlRoot = new XmlParser().parse(ivy.ivyXml);

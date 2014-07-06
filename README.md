@@ -46,6 +46,10 @@ Version History
 
 ### 0.7.0 (not yet released)
 
+### 0.6.1 2014-07-06
+
+* gradle-local-repository: Fixed handling of parent dependencies - copy poms
+
 ### 0.6.0 2014-07-05
 
 * Use groovy-2.3.3 to compile all groovy scripts
