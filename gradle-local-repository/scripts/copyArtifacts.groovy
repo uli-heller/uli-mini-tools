@@ -65,24 +65,47 @@ AntBuilder ant = new AntBuilder();
 for (Ivy ivy : allIvys) {
   GroupArtifactVersion gav = ivy.groupArtifactVersion;
   File folder = new File(toDir, "${gav.group}/${gav.artifact}/${gav.version}"); 
-  folder.mkdirs();
-  allPoms.findAll{ jar -> jar.groupArtifactVersion.equals(gav) }.each {
-    ant.copy(file: it.pom, todir: folder);
-  }
-  // gradle-2.0 doesn't provide publications within the ivy.xml file,
-  // so we'll create them...
-  def xmlRoot = new XmlParser().parse(ivy.ivyXml);
-  def publications = xmlRoot.'**'.publications[0];
-  boolean fAddPublications = publications.children().size() <= 0;
+  boolean fCreateAndCopy = false; // create destination folder only when set to true...
   allJars.findAll{ jar -> jar.groupArtifactVersion.equals(gav) }.each {
-    ant.copy(file: it.jar, todir: folder);
-    if (fAddPublications) {
-      publications.appendNode('artifact', [name: it.groupArtifactVersion.artifact, type: 'jar', ext: 'jar', conf: 'master']);
+    fCreateAndCopy = true;        // there is a jar file -> destination has to be created
+  }
+  if (! fCreateAndCopy) {         // we're not sure about the destination yet...
+    def xmlPom;                   // so we'll parse the pom file
+    allPoms.findAll{ jar -> jar.groupArtifactVersion.equals(gav) }.each {
+      xmlPom =  new XmlParser().parse(it.pom);
+    }
+    def packaging = xmlPom.packaging[0]; // ... and look at the packaging
+    if (packaging == null) {
+      //println "${gav}: No packaging"
+      fCreateAndCopy = true;             // no packaging found -> destination has to be created
+    } else {
+      if (packaging.text() != 'pom') {
+        fCreateAndCopy = true;           // not 'pom' packaged -> destination has to be created
+      //} else {
+      //  println "${gav}: POM packaging -> skipped";
+      }
     }
   }
-  def writer = new FileWriter(new File(folder, "ivy-${gav.version}.xml"));
-  new XmlNodePrinter(new PrintWriter(writer)).print(xmlRoot);
-  //ant.copy(file: ivy.ivyXml, tofile: new File(folder, "ivy-${gav.version}.xml"));
+  if (fCreateAndCopy) {
+    folder.mkdirs();
+    allPoms.findAll{ jar -> jar.groupArtifactVersion.equals(gav) }.each {
+      ant.copy(file: it.pom, todir: folder);
+    }
+    // gradle-2.0 doesn't provide publications within the ivy.xml file,
+    // so we'll create them...
+    def xmlRoot = new XmlParser().parse(ivy.ivyXml);
+    def publications = xmlRoot.'**'.publications[0];
+    boolean fAddPublications = publications.children().size() <= 0;
+    allJars.findAll{ jar -> jar.groupArtifactVersion.equals(gav) }.each {
+      ant.copy(file: it.jar, todir: folder);
+      if (fAddPublications) {
+        publications.appendNode('artifact', [name: it.groupArtifactVersion.artifact, type: 'jar', ext: 'jar', conf: 'master']);
+      }
+    }
+    def writer = new FileWriter(new File(folder, "ivy-${gav.version}.xml"));
+    new XmlNodePrinter(new PrintWriter(writer)).print(xmlRoot);
+    //ant.copy(file: ivy.ivyXml, tofile: new File(folder, "ivy-${gav.version}.xml"));
+  }
 }
 
 GroupArtifactVersion parseGroupArtifactVersion(File f) {
