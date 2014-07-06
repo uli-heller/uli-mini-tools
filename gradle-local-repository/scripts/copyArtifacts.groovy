@@ -2,12 +2,13 @@ import groovy.transform.EqualsAndHashCode;
 import groovy.transform.ToString;
 
 
-def cli = new CliBuilder(usage: "copyArtifacts [-v][-h] -g gradleHome -t to", posix: true);
+def cli = new CliBuilder(usage: "gradle-local-repository [-v][-h] [-c copyPomsFile] -g gradleHome -t to", posix: true);
 cli.with {
     h longOpt:   'help',                                                    'Show usage information'
     v longOpt:   'verbose',                                                 'Create debug output'
-    g longOpt:   'gradle-home',  required: true, args: 1, argName: 'gradleHomeDir',  '...'
-    t longOpt:   'to',           required: true, args: 1, argName: 'toDir',    '...'
+    c longOpt:   'copy-poms',                    args: 1, argName: 'copyPomsFile', 'File containing a list of forced poms to copy'
+    g longOpt:   'gradle-home',  required: true, args: 1, argName: 'gradleHomeDir',  'Name of the gradle home directory'
+    t longOpt:   'to',           required: true, args: 1, argName: 'toDir',    'Destination folder'
 };
 
 def options = cli.parse(args);
@@ -24,9 +25,19 @@ if (options.h) {
 boolean fVerbose           = options.v;
 String groovyHomeDirString = options.g;
 String toDirString         = options.t;
+String copyPomsString      = options.c ? options.c : null;
 
 File groovyHomeDir = new File(groovyHomeDirString);
 File toDir         = new File(toDirString);
+
+def copyPoms = [];
+
+if (copyPomsString) {
+  File fcps = new File(copyPomsString);
+  fcps.eachLine {
+    copyPoms += it;
+  }
+}
 
 def allJars = [];
 def allIvys = [];
@@ -68,6 +79,9 @@ for (Ivy ivy : allIvys) {
   boolean fCreateAndCopy = false; // create destination folder only when set to true...
   allJars.findAll{ jar -> jar.groupArtifactVersion.equals(gav) }.each {
     fCreateAndCopy = true;        // there is a jar file -> destination has to be created
+  }
+  if (copyPoms.contains(gav.artifact)) {
+    fCreateAndCopy = true;
   }
   if (! fCreateAndCopy) {         // we're not sure about the destination yet...
     def xmlPom;                   // so we'll parse the pom file

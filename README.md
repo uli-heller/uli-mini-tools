@@ -46,9 +46,13 @@ Version History
 
 ### 0.7.0 (not yet released)
 
-### 0.6.2 2014-07-06
+### 0.6.3 2014-07-06
 
 * gradle-local-repository: Fixed handling of parent dependencies - copy poms
+
+### 0.6.2 2014-07-06
+
+* no improvements
 
 ### 0.6.1 2014-07-06
 
