@@ -9,6 +9,8 @@ cli.with {
     c longOpt:   'copy-poms',                    args: 1, argName: 'copyPomsFile', 'File containing a list of forced poms to copy'
     g longOpt:   'gradle-home',  required: true, args: 1, argName: 'gradleHomeDir',  'Name of the gradle home directory'
     t longOpt:   'to',           required: true, args: 1, argName: 'toDir',    'Destination folder'
+    //i longOpt:   'ivy',          'Create an ivy repo'
+    m longOpt:   'mvn',          'Create a maven repo (instead of an ivy repo'
 };
 
 def options = cli.parse(args);
@@ -23,12 +25,14 @@ if (options.h) {
 }
 
 boolean fVerbose           = options.v;
+boolean fMaven             = options.m;
 String groovyHomeDirString = options.g;
 String toDirString         = options.t;
 String copyPomsString      = options.c ? options.c : null;
 
 File groovyHomeDir = new File(groovyHomeDirString);
 File toDir         = new File(toDirString);
+RepositoryType repositoryType = fMaven ? RepositoryType.MVN : RepositoryType.IVY;
 
 def copyPoms = [];
 
@@ -72,54 +76,58 @@ groovyHomeDir.eachFileRecurse { File file ->
   }
 }
 
-AntBuilder ant = new AntBuilder();
+def allGavs = [];
 for (Ivy ivy : allIvys) {
-  GroupArtifactVersion gav = ivy.groupArtifactVersion;
-  File folder = new File(toDir, "${gav.group}/${gav.artifact}/${gav.version}"); 
-  boolean fCreateAndCopy = false; // create destination folder only when set to true...
-  allJars.findAll{ jar -> jar.groupArtifactVersion.equals(gav) }.each {
-    fCreateAndCopy = true;        // there is a jar file -> destination has to be created
-  }
+  allGavs << ivy.groupArtifactVersion;
+}
+for (Pom pom : allPoms) {
+  allGavs << pom.groupArtifactVersion;
+}
+
+AntBuilder ant = new AntBuilder();
+for (GroupArtifactVersion gav : allGavs) {
+  //GroupArtifactVersion gav = ivy.groupArtifactVersion;
+  File folder = repositoryType.toDir(gav, toDir); //  new File(toDir, "${gav.group}/${gav.artifact}/${gav.version}"); 
+  def pom = findGav(allPoms, gav);
+  def ivy = findGav(allIvys, gav);
+  def jar = findAllGav(allJars, gav);
+  boolean fCreateAndCopy = repositoryType.doCopy(gav, pom?.pom, ivy?.ivyXml, jar);
   if (copyPoms.contains(gav.artifact)) {
     fCreateAndCopy = true;
   }
-  if (! fCreateAndCopy) {         // we're not sure about the destination yet...
-    def xmlPom;                   // so we'll parse the pom file
-    allPoms.findAll{ jar -> jar.groupArtifactVersion.equals(gav) }.each {
-      xmlPom =  new XmlParser().parse(it.pom);
-    }
-    def packaging = xmlPom.packaging[0]; // ... and look at the packaging
-    if (packaging == null) {
-      //println "${gav}: No packaging"
-      fCreateAndCopy = true;             // no packaging found -> destination has to be created
-    } else {
-      if (packaging.text() != 'pom') {
-        fCreateAndCopy = true;           // not 'pom' packaged -> destination has to be created
-      //} else {
-      //  println "${gav}: POM packaging -> skipped";
-      }
-    }
-  }
   if (fCreateAndCopy) {
     folder.mkdirs();
-    allPoms.findAll{ jar -> jar.groupArtifactVersion.equals(gav) }.each {
-      ant.copy(file: it.pom, todir: folder);
+    if (pom != null) {
+      ant.copy(file: pom.pom, todir: folder);
     }
-    // gradle-2.0 doesn't provide publications within the ivy.xml file,
-    // so we'll create them...
-    def xmlRoot = new XmlParser().parse(ivy.ivyXml);
-    def publications = xmlRoot.'**'.publications[0];
-    boolean fAddPublications = publications.children().size() <= 0;
-    allJars.findAll{ jar -> jar.groupArtifactVersion.equals(gav) }.each {
-      ant.copy(file: it.jar, todir: folder);
-      if (fAddPublications) {
-        publications.appendNode('artifact', [name: it.groupArtifactVersion.artifact, type: 'jar', ext: 'jar', conf: 'master']);
+    if (ivy != null) {
+      // gradle-2.0 doesn't provide publications within the ivy.xml file,
+      // so we'll create them...
+      def xmlRoot = new XmlParser().parse(ivy.ivyXml);
+      def publications = xmlRoot.'**'.publications[0];
+      boolean fAddPublications = publications.children().size() <= 0;
+      if (jar != null && jar.size() > 0) {
+        jar.each {
+          ant.copy(file: it.jar, todir: folder);
+          if (fAddPublications) {
+            publications.appendNode('artifact', [name: gav.artifact, type: 'jar', ext: 'jar', conf: 'master']);
+          }
+        }
       }
+      def writer = new FileWriter(new File(folder, "ivy-${gav.version}.xml"));
+      new XmlNodePrinter(new PrintWriter(writer)).print(xmlRoot);
+      //ant.copy(file: ivy.ivyXml, tofile: new File(folder, "ivy-${gav.version}.xml"));
     }
-    def writer = new FileWriter(new File(folder, "ivy-${gav.version}.xml"));
-    new XmlNodePrinter(new PrintWriter(writer)).print(xmlRoot);
-    //ant.copy(file: ivy.ivyXml, tofile: new File(folder, "ivy-${gav.version}.xml"));
   }
+}
+
+def findGav(def l, GroupArtifactVersion gav) {
+  def result = l.find{ it -> it.groupArtifactVersion.equals(gav) }
+  return result;
+}
+def findAllGav(def l, GroupArtifactVersion gav) {
+  def result = l.findAll{ it -> it.groupArtifactVersion.equals(gav) }
+  return result;
 }
 
 GroupArtifactVersion parseGroupArtifactVersion(File f) {
@@ -177,4 +185,48 @@ Pom parsePom (File pom) {
 class Pom {
   File pom;
   GroupArtifactVersion groupArtifactVersion;
+}
+
+enum RepositoryType {
+  IVY {
+    File toDir(GroupArtifactVersion groupArtifactVersion, File baseDir) {
+      File folder = new File(baseDir, "${groupArtifactVersion.group}/${groupArtifactVersion.artifact}/${groupArtifactVersion.version}"); 
+      return folder;
+    }
+    boolean doCopy(GroupArtifactVersion groupArtifactVersion, File pom, File ivy, def jar) {
+      boolean result=false;
+      if (jar != null && jar.size() > 0) {
+        result=true;
+      } else {
+        def xmlPom = new XmlParser().parse(pom);
+        def packaging = xmlPom.packaging[0]; // ... and look at the packaging
+        if (packaging == null) {
+          //println "${gav}: No packaging"
+          result=true;             // no packaging found -> destination has to be created
+        } else {
+          if (packaging.text() != 'pom') {
+            result=true;           // not 'pom' packaged -> destination has to be created
+          }
+        }
+      }
+      return result;
+    }
+  },
+  MVN {
+    File toDir(GroupArtifactVersion groupArtifactVersion, File baseDir) {
+      def groupParts = groupArtifactVersion.group.tokenize('.');
+      File folder = baseDir;
+      for (String p : groupParts) {
+        folder = new File(folder, p);
+      }
+      folder = new File(folder, "${groupArtifactVersion.artifact}/${groupArtifactVersion.version}"); 
+      return folder;
+    }
+    boolean doCopy(GroupArtifactVersion groupArtifactVersion, File pom, File ivy, def jar) {
+      return true;
+    }
+  };
+
+  abstract File toDir(GroupArtifactVersion groupArtifactVersion, File baseDir);
+  abstract boolean doCopy(GroupArtifactVersion groupArtifactVersion, File pom, File ivy, def jar);
 }

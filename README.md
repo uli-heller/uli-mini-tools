@@ -46,6 +46,8 @@ Version History
 
 ### 0.7.0 (not yet released)
 
+* gradle-local-repository: New option -m - create mvn repo
+
 ### 0.6.3 2014-07-06
 
 * gradle-local-repository: Fixed handling of parent dependencies - copy poms
