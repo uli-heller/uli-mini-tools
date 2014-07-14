@@ -90,7 +90,7 @@ for (GroupArtifactVersion gav : allGavs) {
   File folder = repositoryType.toDir(gav, toDir); //  new File(toDir, "${gav.group}/${gav.artifact}/${gav.version}"); 
   def pom = findGav(allPoms, gav);
   def ivy = findGav(allIvys, gav);
-  def jar = findAllGav(allJars, gav);
+  def jar = findAllGav(allJars, gav); // binary and source jars
   boolean fCreateAndCopy = repositoryType.doCopy(gav, pom?.pom, ivy?.ivyXml, jar);
   if (copyPoms.contains(gav.artifact)) {
     fCreateAndCopy = true;
