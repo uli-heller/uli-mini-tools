@@ -48,6 +48,7 @@ Version History
 
 * gradle-local-repository: New option -m - create mvn repo
 * scp: started - doesn't work yet
+* Use groovy-2.3.4 to compile all groovy scripts
 
 ### 0.6.3 2014-07-06
 
