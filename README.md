@@ -47,6 +47,7 @@ Version History
 ### 0.7.0 (not yet released)
 
 * gradle-local-repository: New option -m - create mvn repo
+* scp: started - doesn't work yet
 
 ### 0.6.3 2014-07-06
 
