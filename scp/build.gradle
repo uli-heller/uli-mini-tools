@@ -6,13 +6,16 @@ apply plugin: 'application'
 sourceCompatibility=1.5
 targetCompatibility=1.5
 
-mainClassName='org.uli.scp.Main'; // for 'gradle run' and MANIFEST.MF
+mainClassName='org.uli.scp.ScpFrom'; // for 'gradle run' and MANIFEST.MF
+//mainClassName='uk.co.marcoratto.scp.Runme';
 
 dependencies {
   compile project(':util')
   //compile 'org.apache.commons:commons-lang3:3.1'
   compile 'commons-cli:commons-cli:1.2'
   compile 'com.jcraft:jsch:0.1.51'
+  compile 'log4j:log4j:1.2.17'
+  compile 'commons-io:commons-io:2.4'
 }
 
 repositories {

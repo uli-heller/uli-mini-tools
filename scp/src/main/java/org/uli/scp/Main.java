@@ -10,7 +10,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
-//import org.apache.commons.cli.OptionBuilder;
+// import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
@@ -18,16 +18,18 @@ import org.apache.commons.cli.PosixParser;
 import org.uli.util.MyOptionBuilder;
 
 public class Main {
-    static private final String NAME="scp";
+
+    static private final String NAME = "scp";
+
     static public void main(String[] args) {
         Main main = new Main();
         System.exit(main.execute(args));
     }
-    
+
     public int execute(String[] args) {
         int exitCode = 0;
         Options options = new Options();
-	Option f = MyOptionBuilder.init().withArgName("fromFile")
+        Option f = MyOptionBuilder.init().withArgName("fromFile")
                     .hasArg(true)
                     .isRequired(true)
                     .withDescription("input file containing html entities")
@@ -37,7 +39,7 @@ public class Main {
                     .isRequired(true)
                     .withDescription("output file to be generated containing no html entities")
                     .create("t");
-	Option encoding = MyOptionBuilder.init().withArgName("encoding")
+        Option encoding = MyOptionBuilder.init().withArgName("encoding")
                     .hasArg(true)
                     .isRequired(false)
                     .withDescription("encoding for input and output")
@@ -61,7 +63,7 @@ public class Main {
         String result = new String(content, charsetName);
         return result;
     }
-    
+
     private void writeFile(File file, String content, String charsetName) throws UnsupportedEncodingException, IOException {
         FileOutputStream fileOutputStream = new FileOutputStream(file);
         fileOutputStream.write(content.getBytes(charsetName));
