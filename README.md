@@ -18,6 +18,7 @@ This project contains some of my small Java based tools.
 * sha256 ... calculate the SHA256 hash of a file; emulates the unix command "sha256sum"
 * sha512 ... calculate the SHA512 hash of a file; emulates the unix command "sha512sum"
 * tcpmon ... monitors tcp connections
+* tika-app ... extract text from varios files
 * wsdldiff ... shows the differences between wsdl files (based on soa-model-*)
 * xmldiff ... shows the differences between xml files (based on xmlunit)
 
@@ -49,6 +50,7 @@ Version History
 * gradle-local-repository: New option -m - create mvn repo
 * scp: started - doesn't work yet
 * Use groovy-2.3.4 to compile all groovy scripts
+* tika-app: New tool - basically just a very small wrapper around tika-app.jar
 
 ### 0.6.3 2014-07-06
 

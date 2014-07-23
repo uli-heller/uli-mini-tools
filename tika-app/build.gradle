@@ -1,0 +1,41 @@
+defaultTasks 'sh', 'bat'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+sourceCompatibility=1.5
+targetCompatibility=1.5
+
+mainClassName='org.apache.tika.cli.TikaCLI'; // for 'gradle run' and MANIFEST.MF
+
+dependencies {
+  //compile project(':util')
+  //compile 'org.apache.commons:commons-lang3:3.1'
+  //compile 'commons-cli:commons-cli:1.2'
+  compile('org.apache.tika:tika-app:1.5') {
+    transitive=false;
+  }
+}
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    from {
+      configurations.compile.collect {
+         it.isDirectory() ? it : zipTree(it).matching{
+            //exclude "META-INF/**" //especially for tika - otherwise, text extraction doesn't work
+         }
+      }
+    }
+    manifest {
+        attributes("Main-Class": mainClassName)
+    }
+}
+
+clean {
+    delete "${project.name}-${version}.sh"
+    delete "${project.name}-${version}.bat"
+    delete 'bin'
+}
