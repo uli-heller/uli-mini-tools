@@ -55,7 +55,7 @@ configure(subprojects) { project ->
 }
 
 configure(allprojects) { project ->
-  ext.groovyVersion = '2.3.4'
+  ext.groovyVersion = '2.3.6'
 }
 
 htmlDependencyReport {
@@ -69,5 +69,5 @@ task testReport(type: TestReport) {
 }
 
 task wrapper(type: Wrapper) {
-  gradleVersion = "2.1-rc-1" //"2.0"
+  gradleVersion = "2.1-rc-2" //"2.0"
 }
