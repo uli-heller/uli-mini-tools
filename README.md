@@ -49,7 +49,7 @@ Version History
 
 * gradle-local-repository: New option -m - create mvn repo
 * scp: started - doesn't work yet
-* Use groovy-2.3.6 to compile all groovy scripts
+* Use groovy-2.3.7 to compile all groovy scripts
 * tika-app: New tool - basically just a very small wrapper around tika-app.jar
 * gradle: 2.0 -> 2.1-rc-1 -> 2.1-rc-2 -> 2.1-rc-3 -> 2.1-rc-4 -> 2.1
    2.1 -> 2.2-rc-1
