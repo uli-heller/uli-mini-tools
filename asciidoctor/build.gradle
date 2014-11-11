@@ -1,0 +1,29 @@
+defaultTasks 'sh', 'bat'
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'application'
+
+mainClassName='org.uli.asciidoctor.Main'; // for 'gradle run' and MANIFEST.MF
+
+dependencies {
+  compile 'org.asciidoctor:asciidoctorj:1.5.1'
+}
+
+repositories {
+    mavenCentral()
+}
+
+// build a fat jar (http://docs.codehaus.org/display/GRADLE/Cookbook#Cookbook-Creatingafatjar)
+// the jar will be named build/libs/forward-proxy-servlet.jar
+jar {
+    from {
+      configurations.compile.collect {
+         it.isDirectory() ? it : zipTree(it).matching{
+            exclude "META-INF/**"
+         }
+      }
+    }
+    manifest {
+        attributes("Main-Class": mainClassName)
+    }
+}
