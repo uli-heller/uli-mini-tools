@@ -16,7 +16,8 @@ dependencies {
 repositories {
     mavenCentral()
     maven {
-      url 'http://repository.membrane-soa.org/content/repositories/releases'
+      //url 'http://repository.membrane-soa.org/content/repositories/releases' // not available as of 2015-01-29
+      url 'mvn-repo'
     }
 }
 
