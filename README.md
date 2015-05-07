@@ -61,7 +61,7 @@ Version History
 * Use groovy-2.4.0 to compile all groovy scripts
 * tika-app: New tool - basically just a very small wrapper around tika-app.jar
 * gradle: 2.0 -> 2.1-rc-1 -> 2.1-rc-2 -> 2.1-rc-3 -> 2.1-rc-4 -> 2.1
-   2.1 -> 2.2-rc-1 -> 2.2-rc-2 -> 2.2 -> 2.2.1
+   2.1 -> 2.2-rc-1 -> 2.2-rc-2 -> 2.2 -> 2.2.1 -> 2.4
 * wikitext: upgraded mylyn wikitext from 2.1 -> 2.2 -> 2.3
 
 ### 0.6.3 2014-07-06
