@@ -11,12 +11,13 @@ ext.groovyScriptName="${projectDir}/scripts/i18nbinder.groovy";
 
 dependencies {
     compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
-    compile 'org.omnaest.i18nbinder:i18nbinder-ant:0.1.17'
+    compile 'org.omnaest.i18nbinder:i18nbinder-ant:0.1.17u2'
     runtime "commons-cli:commons-cli:1.2"
-    runtime 'org.apache.ant:ant:1.9.3'
+    runtime 'org.apache.ant:ant:1.9.5'
 }
 
 repositories {
+    maven { url "https://raw.github.com/uli-heller/i18n-binder/mvn-repo/" }
     mavenCentral()
 }
 
