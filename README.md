@@ -54,15 +54,16 @@ See [LICENSE.txt](LICENSE.txt).
 Version History
 ---------------
 
-### 0.7.0 (not yet released)
+### 0.7.0 2017-06-27
 
 * gradle-local-repository: New option -m - create mvn repo
 * scp: started - doesn't work yet
-* Use groovy-2.4.0 to compile all groovy scripts
+* Use groovy-2.4.3 to compile all groovy scripts
 * tika-app: New tool - basically just a very small wrapper around tika-app.jar
 * gradle: 2.0 -> 2.1-rc-1 -> 2.1-rc-2 -> 2.1-rc-3 -> 2.1-rc-4 -> 2.1
    2.1 -> 2.2-rc-1 -> 2.2-rc-2 -> 2.2 -> 2.2.1 -> 2.4
 * wikitext: upgraded mylyn wikitext from 2.1 -> 2.2 -> 2.3
+* i18nbinder: Use 0.1.17u2
 
 ### 0.6.3 2014-07-06
 
