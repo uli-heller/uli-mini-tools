@@ -54,6 +54,10 @@ See [LICENSE.txt](LICENSE.txt).
 Version History
 ---------------
 
+### 0.7.1 (not yet released)
+
+* wikitext: upgraded mylyn wikitext from 2.3 -> 2.6
+
 ### 0.7.0 2017-06-27
 
 * gradle-local-repository: New option -m - create mvn repo
