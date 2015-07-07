@@ -8,9 +8,9 @@ ext.groovyScriptName="${projectDir}/scripts/copyArtifacts.groovy";
 
 dependencies {
   compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
-  testCompile 'junit:junit:4.11'
+  testCompile 'junit:junit:4.12'
   runtime "commons-cli:commons-cli:1.2"
-  runtime 'org.apache.ant:ant:1.9.2'
+  runtime 'org.apache.ant:ant:1.9.6'
 }
 
 repositories {
