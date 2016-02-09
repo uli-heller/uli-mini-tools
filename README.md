@@ -57,7 +57,7 @@ Version History
 ### 0.7.1 (not yet released)
 
 * wikitext: upgraded mylyn wikitext from 2.3 -> 2.6
-* gradle: 2.4 -> 2.5 -> 2.6-rc-1 -> 2.6 -> 2.8 -> 2.10-rc-1 -> 2.10
+* gradle: 2.4 -> 2.5 -> 2.6-rc-1 -> 2.6 -> 2.8 -> 2.10-rc-1 -> 2.10 -> 2.11
 
 ### 0.7.0 2017-06-27
 
