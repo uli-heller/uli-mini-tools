@@ -3,8 +3,8 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'application'
 
-sourceCompatibility=1.5
-targetCompatibility=1.5
+sourceCompatibility=1.8
+targetCompatibility=1.8
 
 mainClassName='org.uli.wikitext.Main'; // for 'gradle run' and MANIFEST.MF
 dependencies {
